@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스파링 대진표</title>
+<style>
+:root {
+  --navy:    #1e3a5f;
+  --navy2:   #2d5282;
+  --navy3:   #4a6fa5;
+  --bg:      #f0f4f8;
+  --surface: #ffffff;
+  --sf2:     #f8fafc;
+  --border:  #e2e8f0;
+  --text:    #1e293b;
+  --text2:   #475569;
+  --text3:   #94a3b8;
+  --green:   #059669;
+  --gbg:     #ecfdf5;
+  --amber:   #d97706;
+  --abg:     #fffbeb;
+  --blue:    #2563eb;
+  --bbg:     #eff6ff;
+  --red:     #dc2626;
+  --rbg:     #fef2f2;
+  --sh:      0 1px 3px rgba(0,0,0,.09),0 1px 2px rgba(0,0,0,.05);
+  --sh2:     0 4px 12px rgba(0,0,0,.1),0 2px 4px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',-apple-system,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* HEADER */
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 22px;display:flex;align-items:center;justify-content:space-between}
+.h-text h1{font-size:1.3rem;font-weight:800;color:#fff;letter-spacing:.3px}
+.sync-badge{font-size:.68rem;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,.15);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.25)}
+.sync-badge.live{background:rgba(5,150,105,.35);border-color:rgba(110,231,183,.5);color:#6ee7b7}
+.sync-badge.local{background:rgba(217,119,6,.25);border-color:rgba(252,211,77,.4);color:#fcd34d}
+/* TABS */
+.tab-bar{background:var(--surface);display:flex;border-bottom:2px solid var(--border);box-shadow:var(--sh);position:sticky;top:0;z-index:50}
+.tab{flex:1;padding:13px 6px;text-align:center;cursor:pointer;font-size:.83rem;color:var(--text3);transition:color .2s;border-bottom:3px solid transparent;margin-bottom:-2px;user-select:none}
+.tab.active{color:var(--navy);font-weight:700;border-bottom-color:var(--navy)}
+.tab:hover:not(.active){color:var(--text2)}
+/* LAYOUT */
+.content{max-width:800px;margin:0 auto;padding:20px 16px}
+.section{display:none}.section.active{display:block}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--surface);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--sh);border:1px solid var(--border)}
+.stat-n{font-size:2rem;font-weight:900;color:var(--navy);line-height:1}
+.stat-l{font-size:.7rem;color:var(--text3);margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:.3px}
+/* BUTTONS */
+.btn{padding:9px 16px;border-radius:8px;border:none;cursor:pointer;font-size:.83rem;font-weight:600;transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--navy2)}
+.btn-ol{background:var(--surface);color:var(--text2);border:1.5px solid var(--border)}.btn-ol:hover{border-color:var(--navy);color:var(--navy)}
+.btn-sm{padding:5px 10px;font-size:.73rem;border-radius:6px}
+.btn-amber-sm{background:var(--abg);color:var(--amber);border:1px solid #fcd34d}.btn-amber-sm:hover{background:var(--amber);color:#fff}
+.btn-green-sm{background:var(--gbg);color:var(--green);border:1px solid #6ee7b7}.btn-green-sm:hover{background:var(--green);color:#fff}
+.btn-red-sm{background:var(--rbg);color:var(--red);border:1px solid #fca5a5}.btn-red-sm:hover{background:var(--red);color:#fff}
+.btn-ol-sm{background:var(--surface);color:var(--text2);border:1.5px solid var(--border)}.btn-ol-sm:hover{border-color:var(--navy);color:var(--navy)}
+.act-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+/* GYM CARD */
+.gym-card{background:var(--surface);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--border)}
+.gym-head{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--navy);border-radius:8px;margin-bottom:10px}
+.gym-head-name{font-size:.88rem;font-weight:700;color:#fff}
+.gym-head-n{background:rgba(255,255,255,.2);color:#fff;border-radius:20px;padding:2px 10px;font-size:.7rem;font-weight:600}
+/* FIGHTER ROW */
+.fr{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:8px;background:var(--sf2);border:1px solid var(--border);margin-bottom:6px;gap:8px}
+.fi{flex:1;min-width:0}
+.fn-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.fn{font-weight:600;font-size:.9rem;color:var(--text)}
+.fm{font-size:.73rem;color:var(--text3);margin-top:3px}
+.fa{display:flex;gap:5px;flex-shrink:0}
+/* BADGES */
+.bdg{padding:2px 7px;border-radius:20px;font-size:.67rem;font-weight:700}
+.bdg-active{background:#dcfce7;color:#15803d;border:1px solid #86efac}
+.bdg-hold{background:#fee2e2;color:#b91c1c;border:1px solid #fca5a5}
+.sk-하{background:#f1f5f9;color:#64748b;border:1px solid #cbd5e1}
+.sk-중하{background:#eff6ff;color:#1d4ed8;border:1px solid #93c5fd}
+.sk-중{background:#f0fdf4;color:#15803d;border:1px solid #86efac}
+.sk-중상{background:#fff7ed;color:#c2410c;border:1px solid #fdba74}
+.sk-상{background:#fef2f2;color:#b91c1c;border:1px solid #fca5a5}
+/* MATCH CARDS */
+.match-card{background:var(--surface);border-radius:12px;margin-bottom:10px;box-shadow:var(--sh);border:1px solid var(--border);border-left:4px solid #cbd5e1;transition:box-shadow .2s,opacity .2s,transform .15s}
+.match-card.s-confirmed{border-left-color:var(--green)}
+.match-card.s-tentative{border-left-color:var(--amber)}
+.match-card.s-pending  {border-left-color:var(--blue)}
+.match-card.mc-drag{opacity:.35;transform:scale(.98)}
+.match-card.mc-over{box-shadow:0 0 0 2px var(--navy2),var(--sh2);transform:scale(1.01)}
+.mc-inner{padding:14px 14px 12px}
+.mc-top{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.dh{font-size:1.1rem;color:var(--text3);cursor:grab;user-select:none;line-height:1;flex-shrink:0}
+.dh:active{cursor:grabbing}
+.mc-num{font-size:.73rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.4px}
+.wdiff{font-size:.7rem;color:var(--text3)}
+.spill{margin-left:auto;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700}
+.sp-confirmed{background:var(--gbg);color:var(--green)}
+.sp-tentative{background:var(--abg);color:var(--amber)}
+.sp-pending  {background:var(--bbg);color:var(--blue)}
+/* FIGHTER SLOTS */
+.fvs{display:flex;align-items:stretch;gap:8px}
+.fslot{flex:1;background:var(--sf2);border:1.5px solid var(--border);border-radius:10px;padding:10px 10px;text-align:center;cursor:grab;transition:border-color .15s,background .15s,transform .15s;user-select:none;position:relative}
+.fslot:active{cursor:grabbing}
+.fslot::after{content:'⠿';position:absolute;top:6px;right:8px;font-size:.7rem;color:var(--text3);opacity:.5}
+.fslot.fs-drag{opacity:.3}
+.fslot.fs-over{border-color:var(--navy2);background:var(--bbg);transform:scale(1.03)}
+.fsn{font-weight:700;font-size:.9rem;color:var(--text)}
+.fsg{font-size:.7rem;color:var(--navy3);font-weight:600;margin-top:2px}
+.fsi{font-size:.7rem;color:var(--text3);margin-top:5px;display:flex;align-items:center;justify-content:center;gap:4px}
+.vs-div{display:flex;align-items:center;font-size:.82rem;font-weight:900;color:var(--text3);flex-shrink:0}
+.mc-bot{display:flex;align-items:center;gap:5px;margin-top:10px;flex-wrap:wrap}
+.sbtn{padding:4px 10px;border-radius:6px;border:1.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;font-size:.72rem;font-weight:600;transition:all .15s}
+.sbtn:hover{border-color:var(--navy);color:var(--navy)}
+.sbtn.sb-conf{background:var(--gbg);border-color:var(--green);color:var(--green)}
+.sbtn.sb-tent{background:var(--abg);border-color:var(--amber);color:var(--amber)}
+.sbtn.sb-pend{background:var(--bbg);border-color:var(--blue);color:var(--blue)}
+.delbtn{margin-left:auto;padding:4px 10px;border-radius:6px;border:1px solid #fca5a5;background:transparent;color:#f87171;cursor:pointer;font-size:.72rem;font-weight:600;transition:all .15s}
+.delbtn:hover{background:var(--red);color:#fff;border-color:var(--red)}
+/* BYE */
+.bye-card{background:var(--surface);border-radius:10px;padding:14px;box-shadow:var(--sh);border:1px solid var(--border);margin-top:4px}
+.bye-t{font-size:.7rem;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.bye-tags{display:flex;flex-wrap:wrap;gap:6px}
+.bye-tag{background:var(--abg);border:1px solid #fcd34d;border-radius:20px;padding:4px 12px;font-size:.76rem;color:var(--amber)}
+/* DRAG HINT */
+.drag-hint{font-size:.72rem;color:var(--text3);margin-bottom:12px;padding:8px 12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;gap:6px}
+/* RESULTS */
+.res-card{background:var(--surface);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--border)}
+.res-gym{font-size:.7rem;font-weight:700;color:var(--navy3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.res-vs{display:flex;align-items:stretch;gap:8px;margin-bottom:12px}
+.rslot{flex:1;background:var(--sf2);border:1.5px solid var(--border);border-radius:10px;padding:10px;text-align:center;transition:all .2s}
+.rslot.winner{border-color:var(--green);background:var(--gbg)}
+.rslot .fn{font-size:.9rem}
+.rslot .fm{font-size:.7rem;color:var(--text3);margin-top:3px}
+.rbns{display:flex;gap:6px}
+.rbn{flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:.78rem;font-weight:600;transition:all .15s}
+.rbn:not(.sel):hover{border-color:var(--navy);color:var(--navy)}
+.rbn.sel-a,.rbn.sel-b{background:var(--green);border-color:var(--green);color:#fff}
+.rbn.sel-d{background:var(--amber);border-color:var(--amber);color:#fff}
+.note-inp{width:100%;background:var(--sf2);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:.8rem;resize:vertical;min-height:50px;margin-top:10px;font-family:inherit;transition:border-color .15s}
+.note-inp:focus{outline:none;border-color:var(--navy)}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:16px;padding:24px;width:100%;max-width:420px;box-shadow:var(--sh2)}
+.modal-t{font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:18px}
+.modal-ft{display:flex;gap:8px;margin-top:18px}
+/* FORM */
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.73rem;font-weight:600;color:var(--text2);margin-bottom:4px}
+.field input,.field select,.field textarea{width:100%;background:var(--sf2);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-size:.86rem;font-family:inherit;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy)}
+.field textarea{resize:vertical;min-height:52px}
+.fg{display:grid;gap:10px}.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:1fr 1fr 1fr}
+/* EMPTY */
+.empty{text-align:center;padding:52px 16px;color:var(--text3)}
+.ei{font-size:3rem;margin-bottom:12px}
+.empty p{font-size:.86rem;line-height:1.8}
+/* RANKING */
+.rank-table{background:var(--surface);border-radius:12px;box-shadow:var(--sh);border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.rank-head{display:grid;grid-template-columns:36px 1fr 80px 52px 52px 52px 52px;padding:9px 14px;background:var(--navy);font-size:.7rem;font-weight:700;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.4px;gap:4px}
+.rank-row{display:grid;grid-template-columns:36px 1fr 80px 52px 52px 52px 52px;padding:11px 14px;border-top:1px solid var(--border);gap:4px;align-items:center;cursor:pointer;transition:background .15s}
+.rank-row:hover{background:var(--sf2)}
+.rank-row:first-child{border-top:none}
+.rank-pos{font-size:.85rem;font-weight:900;color:var(--text3);text-align:center}
+.rank-pos.gold{color:#d97706}.rank-pos.silver{color:#64748b}.rank-pos.bronze{color:#b45309}
+.rank-name{font-weight:700;font-size:.88rem;min-width:0}
+.rank-gym{font-size:.7rem;color:var(--navy3);margin-top:1px}
+.rank-gym-col{font-size:.75rem;color:var(--text3)}
+.rank-w{font-weight:800;font-size:.9rem;color:var(--green);text-align:center}
+.rank-d{font-weight:700;font-size:.9rem;color:var(--amber);text-align:center}
+.rank-l{font-weight:700;font-size:.9rem;color:var(--red);text-align:center}
+.rank-t{font-weight:600;font-size:.85rem;color:var(--text3);text-align:center}
+.rank-empty{text-align:center;padding:36px;color:var(--text3);font-size:.86rem}
+/* FIGHTER PROFILE MODAL */
+.modal-lg{max-width:520px}
+.profile-header{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.profile-avatar{width:54px;height:54px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.profile-name{font-size:1.1rem;font-weight:800;color:var(--text)}
+.profile-sub{font-size:.75rem;color:var(--text3);margin-top:3px}
+.profile-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.ps-box{background:var(--sf2);border:1px solid var(--border);border-radius:10px;padding:12px 8px;text-align:center}
+.ps-num{font-size:1.5rem;font-weight:900;line-height:1}
+.ps-num.w{color:var(--green)}.ps-num.d{color:var(--amber)}.ps-num.l{color:var(--red)}.ps-num.t{color:var(--navy)}
+.ps-lbl{font-size:.65rem;color:var(--text3);margin-top:3px;font-weight:600;text-transform:uppercase}
+.hist-title{font-size:.72rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.hist-list{max-height:260px;overflow-y:auto}
+.hist-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px;background:var(--sf2);border:1px solid var(--border);margin-bottom:6px;gap:8px}
+.hist-opp{font-weight:600;font-size:.85rem}
+.hist-opp-gym{font-size:.7rem;color:var(--text3);margin-top:1px}
+.hist-res{padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:800}
+.hist-w{background:var(--gbg);color:var(--green);border:1px solid #86efac}
+.hist-l{background:var(--rbg);color:var(--red);border:1px solid #fca5a5}
+.hist-d{background:var(--abg);color:var(--amber);border:1px solid #fcd34d}
+.hist-empty{text-align:center;padding:20px;color:var(--text3);font-size:.82rem}
+/* FIREBASE SETUP BANNER */
+.fb-banner{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.82rem;line-height:1.7;color:#856404}
+.fb-banner b{color:#664d03}
+.fb-banner code{background:#ffeeba;border-radius:4px;padding:1px 5px;font-family:monospace;font-size:.8rem}
+/* JIDO */
+.sbtn.sb-jido{background:#fdf4ff;border-color:#a855f7;color:#7c3aed}
+.spill-jido{background:#fdf4ff;color:#7c3aed;border:1px solid #d8b4fe;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;margin-left:4px}
+.match-card.has-jido{border-left-color:#a855f7}
+.jido-banner{background:#fdf4ff;border:1px solid #d8b4fe;border-radius:6px;padding:4px 10px;font-size:.72rem;color:#7c3aed;font-weight:600;margin-top:8px;display:inline-flex;align-items:center;gap:4px}
+.rank-excl{font-size:.67rem;color:#a855f7;background:#fdf4ff;border:1px solid #d8b4fe;border-radius:20px;padding:1px 6px;margin-left:4px;font-weight:600}
+/* ADD MATCH PANEL */
+.fighter-panel{background:var(--surface);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid var(--border)}
+.fp-title{font-size:.72rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.fp-list{display:flex;flex-wrap:wrap;gap:6px}
+.fp-chip{background:var(--sf2);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:.76rem;font-weight:600;cursor:grab;user-select:none;transition:border-color .15s,background .15s;display:flex;flex-direction:column;gap:2px}
+.fp-chip:active{cursor:grabbing}
+.fp-chip.fc-drag{opacity:.35}
+.fp-chip.fc-over{border-color:var(--navy2);background:var(--bbg)}
+.fp-chip-name{color:var(--text);font-weight:700}
+.fp-chip-info{color:var(--text3);font-size:.67rem}
+.new-match-zone{border:2px dashed var(--border);border-radius:12px;padding:16px;margin-bottom:12px;transition:border-color .2s,background .2s;position:relative}
+.new-match-zone.nmz-over{border-color:var(--navy2);background:var(--bbg)}
+.nmz-label{font-size:.72rem;color:var(--text3);font-weight:600;text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px}
+.nmz-slots{display:flex;align-items:center;gap:8px}
+.nmz-slot{flex:1;background:var(--sf2);border:1.5px dashed var(--border);border-radius:10px;padding:14px 10px;text-align:center;transition:border-color .15s,background .15s;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.nmz-slot.filled{border-style:solid;border-color:var(--navy3);background:var(--bbg)}
+.nmz-slot.nz-over{border-color:var(--navy2);background:#dbeafe}
+.nmz-slot-name{font-weight:700;font-size:.88rem;color:var(--text)}
+.nmz-slot-info{font-size:.68rem;color:var(--text3);margin-top:2px}
+.nmz-slot-empty{font-size:.78rem;color:var(--text3)}
+.nmz-add-btn{width:100%;margin-top:10px;padding:8px;border-radius:8px;border:none;background:var(--navy);color:#fff;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .15s}
+.nmz-add-btn:hover{background:var(--navy2)}
+.nmz-add-btn:disabled{background:var(--text3);cursor:not-allowed}
+.nmz-clear{position:absolute;top:10px;right:10px;font-size:.68rem;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 6px}
+/* PRINT */
+@media print{
+  .tab-bar,.act-bar,.btn,.sbtn,.delbtn,.fa,.dh{display:none!important}
+  body{background:#fff}
+  .match-card,.gym-card{box-shadow:none;break-inside:avoid}
+}
+@media(max-width:480px){
+  .c3{grid-template-columns:1fr 1fr}
+  .stats{gap:8px}
+  .stat-n{font-size:1.6rem}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="h-text">
+    <h1>G복싱 전지점 스파링</h1>
+  </div>
+  <span class="sync-badge" id="sync-badge">⏳ 연결 중</span>
+</header>
+<div class="tab-bar">
+  <div class="tab active" onclick="showTab('fighters',this)">👥 선수관리</div>
+  <div class="tab" onclick="showTab('bracket',this)">🗂️ 대진생성</div>
+  <div class="tab" onclick="showTab('results',this)">📋 결과기록</div>
+  <div class="tab" onclick="showTab('ranking',this)">🏆 랭킹</div>
+</div>
+<div class="content">
+  <!-- Firebase 미설정 안내 배너 (설정 후 자동으로 사라짐) -->
+  <div class="fb-banner" id="fb-banner" style="display:none">
+    ⚠️ <b>지금은 내 브라우저에만 저장되고 있어요.</b> 다른 기기에서도 같은 데이터를 보려면 Firebase를 연결해야 해요.<br>
+    아래 파일 상단의 <code>FIREBASE_CONFIG</code> 값을 채워주세요.<br>
+    👉 <b>설정 방법:</b> <a href="https://console.firebase.google.com" target="_blank" style="color:#0a58ca">console.firebase.google.com</a>
+    → 프로젝트 만들기 → Realtime Database 생성(테스트 모드) → 프로젝트 설정 → 웹 앱 추가 → config 복사
+  </div>
+
+  <!-- 선수관리 -->
+  <div class="section active" id="section-fighters">
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="st-total">0</div><div class="stat-l">전체 선수</div></div>
+      <div class="stat"><div class="stat-n" id="st-active">0</div><div class="stat-l">참가 가능</div></div>
+      <div class="stat"><div class="stat-n" id="st-gyms">0</div><div class="stat-l">참가 지점</div></div>
+    </div>
+    <div class="act-bar">
+      <button class="btn btn-navy" onclick="openFModal()">＋ 선수 추가</button>
+      <button class="btn btn-ol" onclick="openGModal()">＋ 지점 추가</button>
+    </div>
+    <div id="fighters-list"></div>
+  </div>
+  <!-- 대진생성 -->
+  <div class="section" id="section-bracket">
+    <div class="act-bar">
+      <button class="btn btn-navy" onclick="autoGen()">⚡ 자동 대진 생성</button>
+      <button class="btn btn-ol" onclick="toggleAddPanel()">➕ 경기 추가</button>
+      <button class="btn btn-ol" onclick="clearBracket()">🗑 초기화</button>
+      <button class="btn btn-ol" onclick="window.print()">🖨 인쇄</button>
+    </div>
+    <!-- 경기 추가 패널 (드래그 또는 클릭으로 선수 선택) -->
+    <div id="add-panel" style="display:none">
+      <div class="fighter-panel">
+        <div class="fp-title">👥 선수를 아래 칸에 드래그하거나 클릭해서 새 경기를 추가하세요</div>
+        <div class="fp-list" id="fp-list"></div>
+      </div>
+      <div class="new-match-zone" id="nmz"
+        ondragover="onNmzOver(event)" ondragleave="onNmzLeave(event)" ondrop="onNmzDrop(event)">
+        <button class="nmz-clear" onclick="clearNmz()" title="초기화">✕ 비우기</button>
+        <div class="nmz-label">🥊 새 경기</div>
+        <div class="nmz-slots">
+          <div class="nmz-slot" id="nmz-a"
+            ondragover="onNmzSlotOver(event,'A')" ondragleave="onNmzSlotLeave(event,'A')" ondrop="onNmzSlotDrop(event,'A')"
+            onclick="nmzSlotClick('A')">
+            <div class="nmz-slot-empty" id="nmz-a-empty">← 선수 선택</div>
+            <div class="nmz-slot-name" id="nmz-a-name" style="display:none"></div>
+            <div class="nmz-slot-info" id="nmz-a-info" style="display:none"></div>
+          </div>
+          <div class="vs-div">VS</div>
+          <div class="nmz-slot" id="nmz-b"
+            ondragover="onNmzSlotOver(event,'B')" ondragleave="onNmzSlotLeave(event,'B')" ondrop="onNmzSlotDrop(event,'B')"
+            onclick="nmzSlotClick('B')">
+            <div class="nmz-slot-empty" id="nmz-b-empty">선수 선택 →</div>
+            <div class="nmz-slot-name" id="nmz-b-name" style="display:none"></div>
+            <div class="nmz-slot-info" id="nmz-b-info" style="display:none"></div>
+          </div>
+        </div>
+        <button class="nmz-add-btn" id="nmz-add-btn" onclick="commitNewMatch()" disabled>경기 추가하기</button>
+      </div>
+    </div>
+    <div id="bracket-list">
+      <div class="empty"><div class="ei">🗂️</div><p>자동 대진 생성 버튼을 눌러주세요<br>체중 · 실력 · 지점을 고려해 최적 매칭합니다</p></div>
+    </div>
+  </div>
+  <!-- 결과기록 -->
+  <div class="section" id="section-results">
+    <div id="results-list">
+      <div class="empty"><div class="ei">📋</div><p>대진 탭에서 경기를 <b>확정</b>하면<br>여기에 결과 입력란이 표시됩니다</p></div>
+    </div>
+  </div>
+  <!-- 랭킹 -->
+  <div class="section" id="section-ranking">
+    <div id="ranking-list"></div>
+  </div>
+</div>
+
+<!-- 선수 모달 -->
+<div class="overlay" id="modal-f">
+  <div class="modal">
+    <div class="modal-t" id="mf-title">선수 추가</div>
+    <div class="field"><label>이름</label><input id="f-name" placeholder="홍길동" autocomplete="off"></div>
+    <div class="fg c2">
+      <div class="field"><label>지점</label><select id="f-gym"></select></div>
+      <div class="field"><label>성별</label><select id="f-gender"><option>남</option><option>여</option></select></div>
+    </div>
+    <div class="fg c3">
+      <div class="field"><label>체중 (kg)</label><input id="f-weight" type="number" min="30" max="200" placeholder="70"></div>
+      <div class="field"><label>나이</label><input id="f-age" type="number" min="10" max="80" placeholder="25"></div>
+      <div class="field"><label>실력</label><select id="f-skill"><option>하</option><option>중하</option><option>중</option><option>중상</option><option>상</option></select></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-navy" style="flex:1" onclick="saveF()">저장</button>
+      <button class="btn btn-ol" onclick="closeModal('modal-f')">취소</button>
+    </div>
+  </div>
+</div>
+<!-- 선수 프로필 모달 -->
+<div class="overlay" id="modal-profile">
+  <div class="modal modal-lg">
+    <div class="profile-header">
+      <div class="profile-avatar" id="prof-avatar">🥊</div>
+      <div>
+        <div class="profile-name" id="prof-name"></div>
+        <div class="profile-sub" id="prof-sub"></div>
+      </div>
+    </div>
+    <div class="profile-stats">
+      <div class="ps-box"><div class="ps-num w" id="prof-w">0</div><div class="ps-lbl">승</div></div>
+      <div class="ps-box"><div class="ps-num d" id="prof-d">0</div><div class="ps-lbl">무</div></div>
+      <div class="ps-box"><div class="ps-num l" id="prof-l">0</div><div class="ps-lbl">패</div></div>
+      <div class="ps-box"><div class="ps-num t" id="prof-t">0</div><div class="ps-lbl">총</div></div>
+    </div>
+    <div class="hist-title">스파링 기록</div>
+    <div class="hist-list" id="prof-hist"></div>
+    <div class="modal-ft">
+      <button class="btn btn-ol" style="flex:1" onclick="closeModal('modal-profile')">닫기</button>
+    </div>
+  </div>
+</div>
+<!-- 지점 모달 -->
+<div class="overlay" id="modal-g">
+  <div class="modal">
+    <div class="modal-t">지점 추가</div>
+    <div class="field"><label>지점명</label><input id="g-name" placeholder="예: 일산점" autocomplete="off"></div>
+    <div class="modal-ft">
+      <button class="btn btn-navy" style="flex:1" onclick="saveG()">추가</button>
+      <button class="btn btn-ol" onclick="closeModal('modal-g')">취소</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  🔧 FIREBASE 설정 — 아래 값을 교체하면 공유 DB가 연결됩니다
+//
+//  설정 방법 (5분):
+//  1. https://console.firebase.google.com 접속
+//  2. "프로젝트 만들기" 클릭 (Google Analytics 생략 가능)
+//  3. 왼쪽 메뉴 "빌드" → "Realtime Database" → "데이터베이스 만들기"
+//     → 위치: us-central1 → "테스트 모드로 시작" 선택
+//  4. 왼쪽 상단 톱니바퀴(⚙️) → "프로젝트 설정" → "내 앱" 섹션
+//     → "</>" 아이콘 클릭 → 앱 이름 입력 → "앱 등록"
+//  5. 아래 표시되는 firebaseConfig 값을 복사해 아래에 붙여넣기
+//  6. 이 HTML 파일을 저장하고 Vercel에 재배포
+// ══════════════════════════════════════════════════════════════
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyDmhCqiTwkiwYahWk1-iIKhTGLg3CU2i9g",
+  authDomain:        "gboxingsparring.firebaseapp.com",
+  databaseURL:       "https://gboxingsparring-default-rtdb.firebaseio.com",
+  projectId:         "gboxingsparring",
+  storageBucket:     "gboxingsparring.firebasestorage.app",
+  messagingSenderId: "496062349246",
+  appId:             "1:496062349246:web:65eee712cddbe0d23e83ef"
+};
+// ══════════════════════════════════════════════════════════════
+
+// ── UTILS ──────────────────────────────────────────────
+const SKL = {'하':1,'중하':2,'중':3,'중상':4,'상':5};
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,5);
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const mk  = (name,gym,w,age,gender,skill,status='active') => ({id:uid(),name,gym,weight:w,age,gender,skill,status});
+
+function defaults(){
+  return [
+    mk('지재호','구래점',64,17,'남','중'),   mk('지재민','구래점',67,14,'남','중'),
+    mk('이윤혁','구래점',63,19,'남','중상'), mk('박우진','구래점',65,30,'남','중'),
+    mk('신지민','화정점',58,18,'남','하','hold'), mk('이진우','화정점',75,38,'남','중상'),
+    mk('노윤구','화정점',75,60,'남','중'),   mk('김동균','화정점',125,27,'남','중상','hold'),
+    mk('에녹','화정점',60,20,'남','상'),
+    mk('정영훈','주엽점',58,17,'남','상'),   mk('서세준','주엽점',63,16,'남','상'),
+    mk('정준형','주엽점',75,43,'남','중상'), mk('김태현','주엽점',74,27,'남','상'),
+    mk('소윤호','주엽점',80,40,'남','하'),   mk('이름모름','주엽점',75,15,'남','중'),
+    mk('유재준','야당점',50,15,'남','하'),   mk('한시후','야당점',73,17,'남','중'),
+    mk('양설','야당점',72,19,'남','상'),     mk('양결','야당점',79,19,'남','상'),
+  ];
+}
+
+// ── STATE ──────────────────────────────────────────────
+// localStorage에서 즉시 로드 (화면 깜빡임 없이 바로 표시)
+let db = (() => {
+  try { const r = localStorage.getItem('sp_v3'); if(r) return JSON.parse(r); } catch(e){}
+  return { gyms:['구래점','화정점','주엽점','야당점'], fighters:defaults(), matches:[], unmatched:[] };
+})();
+
+let editId    = null;
+let drag      = null;
+let _fbRef    = null;   // Firebase 레퍼런스
+let _lastJson = '';     // 마지막으로 저장한 JSON (자신의 변경 감지용)
+
+// ── SAVE ───────────────────────────────────────────────
+// localStorage + Firebase 동시 저장
+const save = () => {
+  const json = JSON.stringify(db);
+  _lastJson = json;
+  try { localStorage.setItem('sp_v3', json); } catch(e){}
+  if (_fbRef) _fbRef.set(json);
+};
+
+const gf = id => db.fighters.find(f=>f.id===id) || {name:'?',gym:'?',weight:0,age:0,skill:'중',gender:'남'};
+
+// ── FIREBASE ───────────────────────────────────────────
+function setSyncBadge(mode){
+  const el = document.getElementById('sync-badge');
+  if(mode === 'live'){
+    el.textContent = '🔴 실시간 연동';
+    el.className = 'sync-badge live';
+  } else if(mode === 'local'){
+    el.textContent = '💾 로컬 저장';
+    el.className = 'sync-badge local';
+    document.getElementById('fb-banner').style.display = '';
+  } else {
+    el.textContent = '⏳ 연결 중';
+    el.className = 'sync-badge';
+  }
+}
+
+function renderCurrentSection(){
+  const txt = document.querySelector('.tab.active')?.textContent || '';
+  if(txt.includes('선수'))    renderF();
+  else if(txt.includes('대진')) renderB();
+  else if(txt.includes('결과')) renderR();
+  else if(txt.includes('랭킹')) renderRanking();
+  else renderF();
+}
+
+function initFirebase(){
+  const cfg = FIREBASE_CONFIG;
+  // databaseURL이 없으면 로컬 모드
+  if(!cfg.databaseURL){
+    setSyncBadge('local');
+    return;
+  }
+  try {
+    firebase.initializeApp(cfg);
+    _fbRef = firebase.database().ref('gboxing');
+
+    // 1) 최초 1회 Firebase에서 데이터 가져오기
+    _fbRef.once('value', snap => {
+      const json = snap.val();
+
+      if(json && typeof json === 'string'){
+        // Firebase에 데이터 있음 → 사용 (localStorage보다 Firebase가 진실의 원본)
+        try {
+          const data = JSON.parse(json);
+          if(data && Array.isArray(data.fighters)){
+            db = {
+              gyms:      data.gyms      || [],
+              fighters:  data.fighters  || [],
+              matches:   data.matches   || [],
+              unmatched: data.unmatched || []
+            };
+            _lastJson = json;
+            try { localStorage.setItem('sp_v3', json); } catch(e){}
+          }
+        } catch(e){ console.error('Firebase 파싱 오류', e); }
+      } else {
+        // Firebase 비어있음 → 현재 로컬 데이터를 Firebase에 업로드
+        const j = JSON.stringify(db);
+        _lastJson = j;
+        _fbRef.set(j);
+      }
+
+      setSyncBadge('live');
+      renderF(); // Firebase 데이터로 다시 렌더
+
+      // 2) 실시간 리스너 시작 (다른 기기에서 변경 시 자동 반영)
+      _fbRef.on('value', snap => {
+        const json = snap.val();
+        if(!json || json === _lastJson) return; // 내가 저장한 변경이면 무시
+        try {
+          const data = JSON.parse(json);
+          if(data && Array.isArray(data.fighters)){
+            db = {
+              gyms:      data.gyms      || [],
+              fighters:  data.fighters  || [],
+              matches:   data.matches   || [],
+              unmatched: data.unmatched || []
+            };
+            _lastJson = json;
+            try { localStorage.setItem('sp_v3', json); } catch(e){}
+            renderCurrentSection(); // 현재 탭 새로고침
+          }
+        } catch(e){}
+      });
+    });
+
+  } catch(err){
+    console.error('Firebase 연결 오류:', err);
+    setSyncBadge('local');
+  }
+}
+
+// ── TABS ───────────────────────────────────────────────
+function showTab(id, el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('section-'+id).classList.add('active');
+  if(id==='fighters') renderF();
+  if(id==='bracket')  renderB();
+  if(id==='results')  renderR();
+  if(id==='ranking')  renderRanking();
+}
+
+// ── FIGHTERS ───────────────────────────────────────────
+function renderF(){
+  const act = db.fighters.filter(f=>f.status==='active');
+  document.getElementById('st-total').textContent  = db.fighters.length;
+  document.getElementById('st-active').textContent = act.length;
+  document.getElementById('st-gyms').textContent   = db.gyms.length;
+  const grp = {}; db.gyms.forEach(g=>grp[g]=[]);
+  db.fighters.forEach(f=>(grp[f.gym]=grp[f.gym]||[]).push(f));
+  let h='';
+  db.gyms.forEach(gym=>{
+    const list = grp[gym]||[];
+    h += `<div class="gym-card"><div class="gym-head"><span class="gym-head-name">📍 ${esc(gym)}</span><span class="gym-head-n">${list.length}명</span></div>`;
+    if(!list.length) h += `<div style="color:var(--text3);font-size:.8rem;padding:6px 4px">등록된 선수 없음</div>`;
+    list.forEach(f=>{
+      h += `<div class="fr">
+        <div class="fi">
+          <div class="fn-row">
+            <span class="fn">${esc(f.name)}</span>
+            <span class="bdg sk-${f.skill}">${f.skill}</span>
+            <span class="bdg ${f.status==='active'?'bdg-active':'bdg-hold'}">${f.status==='active'?'참가':'보류'}</span>
+          </div>
+          <div class="fm">${f.gender} · ${f.age}세 · ${f.weight}kg</div>
+        </div>
+        <div class="fa">
+          <button class="btn btn-sm ${f.status==='active'?'btn-amber-sm':'btn-green-sm'}" onclick="toggleS('${f.id}')">${f.status==='active'?'보류':'참가'}</button>
+          <button class="btn btn-sm btn-ol-sm" onclick="openEdit('${f.id}')">✏️</button>
+          <button class="btn btn-sm btn-red-sm" onclick="delF('${f.id}')">✕</button>
+        </div>
+      </div>`;
+    });
+    h += `</div>`;
+  });
+  document.getElementById('fighters-list').innerHTML = h;
+}
+
+function openFModal(){
+  editId=null;
+  document.getElementById('mf-title').textContent='선수 추가';
+  ['f-name','f-weight','f-age'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('f-gender').value='남';
+  document.getElementById('f-skill').value='중';
+  refreshGSel(null); openModal('modal-f');
+}
+function openEdit(id){
+  const f=db.fighters.find(x=>x.id===id); if(!f)return;
+  editId=id;
+  document.getElementById('mf-title').textContent='선수 수정';
+  document.getElementById('f-name').value=f.name;
+  document.getElementById('f-weight').value=f.weight;
+  document.getElementById('f-age').value=f.age;
+  document.getElementById('f-gender').value=f.gender;
+  document.getElementById('f-skill').value=f.skill;
+  refreshGSel(f.gym); openModal('modal-f');
+}
+function refreshGSel(sel){
+  document.getElementById('f-gym').innerHTML=db.gyms.map(g=>`<option ${g===sel?'selected':''}>${esc(g)}</option>`).join('');
+}
+function saveF(){
+  const name=document.getElementById('f-name').value.trim();
+  const gym=document.getElementById('f-gym').value;
+  const weight=parseFloat(document.getElementById('f-weight').value);
+  const age=parseInt(document.getElementById('f-age').value);
+  const gender=document.getElementById('f-gender').value;
+  const skill=document.getElementById('f-skill').value;
+  if(!name){alert('이름을 입력해주세요');return;}
+  if(!weight||weight<1){alert('체중을 입력해주세요');return;}
+  if(!age||age<1){alert('나이를 입력해주세요');return;}
+  if(editId){ const i=db.fighters.findIndex(f=>f.id===editId); if(i>=0) db.fighters[i]={...db.fighters[i],name,gym,weight,age,gender,skill}; }
+  else db.fighters.push(mk(name,gym,weight,age,gender,skill));
+  save(); closeModal('modal-f'); renderF();
+}
+function toggleS(id){ const f=db.fighters.find(x=>x.id===id); if(f){f.status=f.status==='active'?'hold':'active';save();renderF();} }
+function delF(id){
+  const f=db.fighters.find(x=>x.id===id);
+  if(!confirm(`${f?.name}을(를) 삭제할까요?`))return;
+  db.fighters=db.fighters.filter(x=>x.id!==id); save(); renderF();
+}
+function openGModal(){ document.getElementById('g-name').value=''; openModal('modal-g'); }
+function saveG(){
+  const name=document.getElementById('g-name').value.trim();
+  if(!name){alert('지점명을 입력해주세요');return;}
+  if(db.gyms.includes(name)){alert('이미 존재하는 지점입니다');return;}
+  db.gyms.push(name); save(); closeModal('modal-g'); renderF();
+}
+
+// ── AUTO MATCH ─────────────────────────────────────────
+function matchScore(a,b){
+  if(a.gym===b.gym) return Infinity;
+  return Math.abs(a.weight-b.weight)*2 + Math.abs((SKL[a.skill]||3)-(SKL[b.skill]||3))*20;
+}
+function autoGen(){
+  const pool=db.fighters.filter(f=>f.status==='active');
+  if(pool.length<2){alert('참가 가능한 선수가 2명 이상 필요합니다');return;}
+  const pairs=[];
+  for(let i=0;i<pool.length;i++) for(let j=i+1;j<pool.length;j++){
+    const s=matchScore(pool[i],pool[j]);
+    if(isFinite(s)) pairs.push({a:pool[i],b:pool[j],s});
+  }
+  pairs.sort((x,y)=>x.s-y.s);
+  const used=new Set(); const matches=[];
+  for(const p of pairs){
+    if(!used.has(p.a.id)&&!used.has(p.b.id)){
+      matches.push({id:uid(),fighterA:p.a.id,fighterB:p.b.id,status:'pending',result:null,note:''});
+      used.add(p.a.id); used.add(p.b.id);
+    }
+  }
+  db.matches=matches;
+  db.unmatched=pool.filter(f=>!used.has(f.id)).map(f=>f.id);
+  save(); renderB(); renderR();
+}
+function clearBracket(){
+  if(!confirm('대진표를 초기화할까요?'))return;
+  db.matches=[]; db.unmatched=[]; save(); renderB(); renderR();
+}
+function setSt(id,st){ const m=db.matches.find(x=>x.id===id); if(m){m.status=st;save();renderB();renderR();} }
+function delM(id){
+  const m=db.matches.find(x=>x.id===id);
+  const a=gf(m?.fighterA),b=gf(m?.fighterB);
+  if(!confirm(`${a.name} vs ${b.name} 경기를 삭제할까요?`))return;
+  db.matches=db.matches.filter(x=>x.id!==id);
+  if(m) db.unmatched=[...db.unmatched,m.fighterA,m.fighterB];
+  save(); renderB(); renderR();
+}
+
+// ── BRACKET RENDER ─────────────────────────────────────
+function renderB(){
+  const el=document.getElementById('bracket-list');
+  if(!db.matches.length){
+    el.innerHTML='<div class="empty"><div class="ei">🗂️</div><p>자동 대진 생성 버튼을 눌러주세요<br>체중 · 실력 · 지점을 고려해 최적 매칭합니다</p></div>';
+    return;
+  }
+  const spill={confirmed:'sp-confirmed',tentative:'sp-tentative',pending:'sp-pending'};
+  const stxt={confirmed:'✅ 확정',tentative:'🤔 고민중',pending:'📋 미정'};
+  let h=`<div class="drag-hint">⠿&nbsp; 경기 카드 왼쪽 핸들로 순서 변경 &nbsp;·&nbsp; 선수 박스를 드래그해 상대 교체</div>`;
+  db.matches.forEach((m,i)=>{
+    const a=gf(m.fighterA), b=gf(m.fighterB);
+    const wd=Math.abs(a.weight-b.weight);
+    const st=m.status||'pending';
+    const isJido=m.sparring_type==='jido';
+    h+=`<div class="match-card s-${st}${isJido?' has-jido':''}" id="mc-${m.id}"
+      ondragover="onMOver(event,'${m.id}')"
+      ondragleave="onMLeave(event,'${m.id}')"
+      ondrop="onMDrop(event,'${m.id}')"
+      ondragend="onDEnd()">
+      <div class="mc-inner">
+        <div class="mc-top">
+          <span class="dh" draggable="true"
+            ondragstart="onMStart(event,'${m.id}')"
+            title="드래그해서 순서 변경">⠿</span>
+          <span class="mc-num">경기 ${i+1}</span>
+          <span class="wdiff">· 체중차 ${wd}kg</span>
+          <span class="spill ${spill[st]}">${stxt[st]}</span>
+          ${isJido?'<span class="spill-jido">🏅 지도</span>':''}
+        </div>
+        <div class="fvs">
+          <div class="fslot" id="fs-${m.id}-A" draggable="true"
+            ondragstart="onSStart(event,'${m.id}','A')"
+            ondragover="onSOver(event,'${m.id}','A')"
+            ondragleave="onSLeave(event,'${m.id}','A')"
+            ondrop="onSDrop(event,'${m.id}','A')">
+            <div class="fsn">${esc(a.name)}</div>
+            <div class="fsg">${esc(a.gym)}</div>
+            <div class="fsi">${a.weight}kg · ${a.age}세 · <span class="bdg sk-${a.skill}">${a.skill}</span></div>
+          </div>
+          <div class="vs-div">VS</div>
+          <div class="fslot" id="fs-${m.id}-B" draggable="true"
+            ondragstart="onSStart(event,'${m.id}','B')"
+            ondragover="onSOver(event,'${m.id}','B')"
+            ondragleave="onSLeave(event,'${m.id}','B')"
+            ondrop="onSDrop(event,'${m.id}','B')">
+            <div class="fsn">${esc(b.name)}</div>
+            <div class="fsg">${esc(b.gym)}</div>
+            <div class="fsi">${b.weight}kg · ${b.age}세 · <span class="bdg sk-${b.skill}">${b.skill}</span></div>
+          </div>
+        </div>
+        <div class="mc-bot">
+          <button class="sbtn ${st==='confirmed'?'sb-conf':''}" onclick="setSt('${m.id}','confirmed')">✅ 확정</button>
+          <button class="sbtn ${st==='tentative'?'sb-tent':''}" onclick="setSt('${m.id}','tentative')">🤔 고민중</button>
+          <button class="sbtn ${st==='pending'?'sb-pend':''}"   onclick="setSt('${m.id}','pending')">📋 미정</button>
+          <button class="sbtn ${m.sparring_type==='jido'?'sb-jido':''}" onclick="toggleJido('${m.id}')" title="지도 경기는 결과 기록은 되지만 랭킹에 포함되지 않아요">🏅 지도</button>
+          <button class="delbtn" onclick="delM('${m.id}')">🗑 삭제</button>
+        </div>
+        ${m.sparring_type==='jido'?'<div class="jido-banner">🏅 지도 경기 — 결과 기록 가능, 랭킹 제외</div>':''}
+      </div>
+    </div>`;
+  });
+  if(db.unmatched?.length){
+    h+=`<div class="bye-card"><div class="bye-t">⚠️ Bye — 상대 없음</div><div class="bye-tags">`;
+    db.unmatched.forEach(id=>{const f=gf(id); h+=`<span class="bye-tag">${esc(f.name)} (${esc(f.gym)} · ${f.weight}kg)</span>`;});
+    h+=`</div></div>`;
+  }
+  el.innerHTML=h;
+}
+
+// ── DRAG: MATCH REORDER ────────────────────────────────
+function onMStart(e, mid){
+  e.stopPropagation();
+  drag={type:'match',matchId:mid};
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain','match');
+  setTimeout(()=>{ const c=document.getElementById('mc-'+mid); if(c) c.classList.add('mc-drag'); },0);
+}
+function onMOver(e, mid){
+  if(!drag||drag.type!=='match'||drag.matchId===mid) return;
+  e.preventDefault();
+  document.querySelectorAll('.match-card').forEach(c=>c.classList.remove('mc-over'));
+  const c=document.getElementById('mc-'+mid); if(c) c.classList.add('mc-over');
+}
+function onMLeave(e, mid){
+  if(!e.currentTarget.contains(e.relatedTarget)){
+    const c=document.getElementById('mc-'+mid); if(c) c.classList.remove('mc-over');
+  }
+}
+function onMDrop(e, mid){
+  e.preventDefault();
+  if(!drag||drag.type!=='match'||drag.matchId===mid) return;
+  const si=db.matches.findIndex(m=>m.id===drag.matchId);
+  const di=db.matches.findIndex(m=>m.id===mid);
+  if(si<0||di<0) return;
+  const [item]=db.matches.splice(si,1);
+  db.matches.splice(di,0,item);
+  drag=null; save(); renderB();
+}
+
+// ── DRAG: FIGHTER SWAP ─────────────────────────────────
+function onSStart(e, mid, side){
+  e.stopPropagation();
+  drag={type:'fighter',matchId:mid,side};
+  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.setData('text/plain','fighter');
+  setTimeout(()=>{ const s=document.getElementById(`fs-${mid}-${side}`); if(s) s.classList.add('fs-drag'); },0);
+}
+function onSOver(e, mid, side){
+  if(!drag||drag.type!=='fighter') return;
+  if(drag.matchId===mid&&drag.side===side) return;
+  e.preventDefault(); e.stopPropagation();
+  document.querySelectorAll('.fslot').forEach(s=>s.classList.remove('fs-over'));
+  const s=document.getElementById(`fs-${mid}-${side}`); if(s) s.classList.add('fs-over');
+}
+function onSLeave(e, mid, side){
+  const s=document.getElementById(`fs-${mid}-${side}`); if(s) s.classList.remove('fs-over');
+}
+function onSDrop(e, mid, side){
+  e.preventDefault(); e.stopPropagation();
+  if(!drag||drag.type!=='fighter') return;
+  if(drag.matchId===mid&&drag.side===side){ drag=null; return; }
+  const sm=db.matches.find(m=>m.id===drag.matchId);
+  const dm=db.matches.find(m=>m.id===mid);
+  if(!sm||!dm) return;
+  const sk=drag.side==='A'?'fighterA':'fighterB';
+  const dk=side==='A'?'fighterA':'fighterB';
+  const tmp=sm[sk]; sm[sk]=dm[dk]; dm[dk]=tmp;
+  drag=null; save(); renderB();
+}
+function onDEnd(){
+  drag=null;
+  document.querySelectorAll('.match-card').forEach(c=>c.classList.remove('mc-drag','mc-over'));
+  document.querySelectorAll('.fslot').forEach(s=>s.classList.remove('fs-drag','fs-over'));
+}
+
+// ── RESULTS ────────────────────────────────────────────
+function renderR(){
+  const conf=db.matches.filter(m=>m.status==='confirmed');
+  const el=document.getElementById('results-list');
+  if(!conf.length){
+    el.innerHTML='<div class="empty"><div class="ei">📋</div><p>대진 탭에서 경기를 <b>확정</b>하면<br>여기에 결과 입력란이 표시됩니다</p></div>';
+    return;
+  }
+  let h='';
+  conf.forEach(m=>{
+    const a=gf(m.fighterA), b=gf(m.fighterB), r=m.result||{};
+    h+=`<div class="res-card">
+      <div class="res-gym">${esc(a.gym)} vs ${esc(b.gym)}${m.sparring_type==='jido'?'<span class="rank-excl">🏅 지도 · 랭킹 제외</span>':''}</div>
+      <div class="res-vs">
+        <div class="rslot ${r.winner===m.fighterA?'winner':''}">
+          <div class="fn">${esc(a.name)}</div><div class="fm">${a.weight}kg · ${a.age}세</div>
+        </div>
+        <div class="vs-div">VS</div>
+        <div class="rslot ${r.winner===m.fighterB?'winner':''}">
+          <div class="fn">${esc(b.name)}</div><div class="fm">${b.weight}kg · ${b.age}세</div>
+        </div>
+      </div>
+      <div class="rbns">
+        <button class="rbn ${r.winner===m.fighterA?'sel-a':''}" onclick="setRes('${m.id}','${m.fighterA}')">${esc(a.name)} 승</button>
+        <button class="rbn ${r.winner==='draw'?'sel-d':''}" onclick="setRes('${m.id}','draw')" style="flex:.65">무승부</button>
+        <button class="rbn ${r.winner===m.fighterB?'sel-b':''}" onclick="setRes('${m.id}','${m.fighterB}')">${esc(b.name)} 승</button>
+      </div>
+      <textarea class="note-inp" placeholder="코치 메모, 특이사항..." oninput="setNote('${m.id}',this.value)">${esc(r.note||'')}</textarea>
+    </div>`;
+  });
+  el.innerHTML=h;
+}
+function setRes(mid,winner){ const m=db.matches.find(x=>x.id===mid); if(m){m.result={...(m.result||{}),winner};save();renderR();} }
+function setNote(mid,note){ const m=db.matches.find(x=>x.id===mid); if(m){m.result={...(m.result||{}),note};save();} }
+
+// ── RANKING ────────────────────────────────────────────
+function calcStats(){
+  const stats = {};
+  const ensure = id => { if(!stats[id]) stats[id]={w:0,d:0,l:0,matches:[]}; };
+  db.matches.forEach(m=>{
+    const r = m.result;
+    if(!r || !r.winner) return;
+    if(m.sparring_type === 'jido') return; // 지도 경기는 랭킹 제외
+    const a = m.fighterA, b = m.fighterB;
+    ensure(a); ensure(b);
+    if(r.winner === 'draw'){
+      stats[a].d++; stats[a].matches.push({matchId:m.id,oppId:b,result:'draw'});
+      stats[b].d++; stats[b].matches.push({matchId:m.id,oppId:a,result:'draw'});
+    } else if(r.winner === a){
+      stats[a].w++; stats[a].matches.push({matchId:m.id,oppId:b,result:'win'});
+      stats[b].l++; stats[b].matches.push({matchId:m.id,oppId:a,result:'lose'});
+    } else if(r.winner === b){
+      stats[b].w++; stats[b].matches.push({matchId:m.id,oppId:a,result:'win'});
+      stats[a].l++; stats[a].matches.push({matchId:m.id,oppId:b,result:'lose'});
+    }
+  });
+  return stats;
+}
+function renderRanking(){
+  const stats = calcStats();
+  const el = document.getElementById('ranking-list');
+  const ids = Object.keys(stats);
+  if(!ids.length){
+    el.innerHTML='<div class="empty"><div class="ei">🏆</div><p>결과가 기록된 경기가 없어요<br>결과기록 탭에서 경기 결과를 입력해주세요</p></div>';
+    return;
+  }
+  ids.sort((a,b)=>{
+    const sa=stats[a], sb=stats[b];
+    if(sb.w!==sa.w) return sb.w-sa.w;
+    if(sb.d!==sa.d) return sb.d-sa.d;
+    return sa.l-sb.l;
+  });
+  const posClass = i => i===0?'gold':i===1?'silver':i===2?'bronze':'';
+  const posMark  = i => i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
+  let h=`<div class="rank-table">
+    <div class="rank-head">
+      <div>#</div><div>선수</div><div>지점</div>
+      <div style="text-align:center">승</div><div style="text-align:center">무</div>
+      <div style="text-align:center">패</div><div style="text-align:center">총</div>
+    </div>`;
+  ids.forEach((id,i)=>{
+    const f=gf(id), s=stats[id], tot=s.w+s.d+s.l;
+    h+=`<div class="rank-row" onclick="showProfile('${id}')">
+      <div class="rank-pos ${posClass(i)}">${posMark(i)}</div>
+      <div><div class="rank-name">${esc(f.name)}</div><div class="rank-gym">${esc(f.gym)}</div></div>
+      <div class="rank-gym-col">${esc(f.gym)}</div>
+      <div class="rank-w">${s.w}</div>
+      <div class="rank-d">${s.d}</div>
+      <div class="rank-l">${s.l}</div>
+      <div class="rank-t">${tot}</div>
+    </div>`;
+  });
+  h+=`</div><div style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:-4px">선수를 클릭하면 상세 기록을 볼 수 있어요</div>`;
+  el.innerHTML=h;
+}
+function showProfile(fighterId){
+  const f = gf(fighterId);
+  const stats = calcStats();
+  const s = stats[fighterId] || {w:0,d:0,l:0,matches:[]};
+  const tot = s.w+s.d+s.l;
+  document.getElementById('prof-name').textContent = f.name;
+  document.getElementById('prof-sub').textContent  = `${f.gym} · ${f.gender} · ${f.age}세 · ${f.weight}kg · 실력 ${f.skill}`;
+  document.getElementById('prof-avatar').textContent = '🥊';
+  document.getElementById('prof-w').textContent = s.w;
+  document.getElementById('prof-d').textContent = s.d;
+  document.getElementById('prof-l').textContent = s.l;
+  document.getElementById('prof-t').textContent = tot;
+  let h='';
+  if(!s.matches.length){
+    h='<div class="hist-empty">아직 기록된 경기가 없어요</div>';
+  } else {
+    s.matches.forEach(m=>{
+      const opp = gf(m.oppId);
+      const resClass = m.result==='win'?'hist-w':m.result==='lose'?'hist-l':'hist-d';
+      const resTxt   = m.result==='win'?'승':m.result==='lose'?'패':'무';
+      h+=`<div class="hist-row">
+        <div>
+          <div class="hist-opp">${esc(opp.name)}</div>
+          <div class="hist-opp-gym">${esc(opp.gym)} · ${opp.weight}kg · ${opp.skill}</div>
+        </div>
+        <span class="hist-res ${resClass}">${resTxt}</span>
+      </div>`;
+    });
+  }
+  document.getElementById('prof-hist').innerHTML=h;
+  openModal('modal-profile');
+}
+
+// ── 지도 TOGGLE ────────────────────────────────────────
+function toggleJido(id){
+  const m=db.matches.find(x=>x.id===id); if(!m)return;
+  m.sparring_type = m.sparring_type==='jido' ? 'regular' : 'jido';
+  save(); renderB(); renderR();
+}
+
+// ── 경기 추가 패널 ──────────────────────────────────────
+let nmzPick = {A: null, B: null};   // 새 경기 슬롯에 선택된 선수
+let fpDrag  = null;                  // 선수 패널에서 드래그 중인 선수 id
+
+function toggleAddPanel(){
+  const p = document.getElementById('add-panel');
+  const isHidden = p.style.display === 'none';
+  p.style.display = isHidden ? '' : 'none';
+  if(isHidden) renderFpList();
+}
+
+function renderFpList(){
+  const fighters = db.fighters.filter(f=>f.status==='active');
+  document.getElementById('fp-list').innerHTML = fighters.map(f=>`
+    <div class="fp-chip" draggable="true"
+      ondragstart="onFpStart(event,'${f.id}')"
+      ondragend="onFpEnd(event,'${f.id}')"
+      onclick="fpChipClick('${f.id}')"
+      id="fpc-${f.id}"
+      title="클릭 또는 드래그해서 슬롯에 넣기">
+      <span class="fp-chip-name">${esc(f.name)}</span>
+      <span class="fp-chip-info">${esc(f.gym)} · ${f.weight}kg · ${f.skill}</span>
+    </div>`).join('');
+}
+
+// 선수 패널 클릭으로 선택 (드래그 불편할 때)
+let fpClickPick = null;
+function fpChipClick(fid){
+  if(!fpClickPick){
+    fpClickPick = fid;
+    document.querySelectorAll('.fp-chip').forEach(c=>c.style.outline='');
+    const el = document.getElementById('fpc-'+fid);
+    if(el) el.style.outline = '2px solid var(--navy)';
+  } else {
+    if(fpClickPick === fid){ fpClickPick=null; document.querySelectorAll('.fp-chip').forEach(c=>c.style.outline=''); return; }
+    // 두 번째 선수 선택 → A, B 슬롯 채우기
+    setNmzSlot('A', fpClickPick);
+    setNmzSlot('B', fid);
+    fpClickPick = null;
+    document.querySelectorAll('.fp-chip').forEach(c=>c.style.outline='');
+  }
+}
+
+// 슬롯 클릭 시 이미 fpClickPick 된 선수 넣기
+function nmzSlotClick(side){
+  if(!fpClickPick) return;
+  setNmzSlot(side, fpClickPick);
+  // 반대쪽 슬롯에 포커스 알림
+  fpClickPick = null;
+  document.querySelectorAll('.fp-chip').forEach(c=>c.style.outline='');
+}
+
+function setNmzSlot(side, fid){
+  const f = db.fighters.find(x=>x.id===fid); if(!f)return;
+  nmzPick[side] = fid;
+  const nameEl = document.getElementById(`nmz-${side.toLowerCase()}-name`);
+  const infoEl = document.getElementById(`nmz-${side.toLowerCase()}-info`);
+  const emptyEl = document.getElementById(`nmz-${side.toLowerCase()}-empty`);
+  const slotEl  = document.getElementById(`nmz-${side.toLowerCase()}`);
+  nameEl.textContent = f.name; nameEl.style.display='';
+  infoEl.textContent = `${f.gym} · ${f.weight}kg · ${f.skill}`; infoEl.style.display='';
+  emptyEl.style.display='none';
+  slotEl.classList.add('filled');
+  updateNmzBtn();
+}
+
+function updateNmzBtn(){
+  document.getElementById('nmz-add-btn').disabled = !(nmzPick.A && nmzPick.B);
+}
+
+function clearNmz(){
+  nmzPick={A:null,B:null};
+  ['a','b'].forEach(s=>{
+    document.getElementById(`nmz-${s}-name`).style.display='none';
+    document.getElementById(`nmz-${s}-info`).style.display='none';
+    document.getElementById(`nmz-${s}-empty`).style.display='';
+    document.getElementById(`nmz-${s}`).classList.remove('filled','nz-over');
+  });
+  updateNmzBtn();
+}
+
+function commitNewMatch(){
+  if(!nmzPick.A||!nmzPick.B){ alert('선수를 두 명 모두 선택해주세요'); return; }
+  if(nmzPick.A===nmzPick.B){ alert('같은 선수는 선택할 수 없어요'); return; }
+  db.matches.push({id:uid(),fighterA:nmzPick.A,fighterB:nmzPick.B,status:'pending',result:null,note:'',sparring_type:'regular'});
+  save();
+  clearNmz();
+  renderB();
+  renderR();
+}
+
+// 선수 패널 드래그
+function onFpStart(e, fid){
+  fpDrag = fid;
+  e.dataTransfer.effectAllowed='copy';
+  e.dataTransfer.setData('text/plain','fp:'+fid);
+  setTimeout(()=>{ const c=document.getElementById('fpc-'+fid); if(c) c.classList.add('fc-drag'); },0);
+}
+function onFpEnd(e, fid){
+  fpDrag=null;
+  document.querySelectorAll('.fp-chip').forEach(c=>c.classList.remove('fc-drag'));
+}
+
+// 새 경기 영역 드래그 이벤트
+function onNmzOver(e){
+  if(!fpDrag) return;
+  e.preventDefault();
+  document.getElementById('nmz').classList.add('nmz-over');
+}
+function onNmzLeave(e){
+  if(!e.currentTarget.contains(e.relatedTarget))
+    document.getElementById('nmz').classList.remove('nmz-over');
+}
+function onNmzDrop(e){
+  e.preventDefault();
+  document.getElementById('nmz').classList.remove('nmz-over');
+  if(!fpDrag) return;
+  // 빈 슬롯 있으면 자동으로 채워줌
+  if(!nmzPick.A){ setNmzSlot('A', fpDrag); fpDrag=null; return; }
+  if(!nmzPick.B){ setNmzSlot('B', fpDrag); fpDrag=null; return; }
+}
+
+// 개별 슬롯 드래그 이벤트
+function onNmzSlotOver(e, side){
+  if(!fpDrag) return;
+  e.preventDefault(); e.stopPropagation();
+  document.getElementById(`nmz-${side.toLowerCase()}`).classList.add('nz-over');
+}
+function onNmzSlotLeave(e, side){
+  document.getElementById(`nmz-${side.toLowerCase()}`).classList.remove('nz-over');
+}
+function onNmzSlotDrop(e, side){
+  e.preventDefault(); e.stopPropagation();
+  document.getElementById(`nmz-${side.toLowerCase()}`).classList.remove('nz-over');
+  document.getElementById('nmz').classList.remove('nmz-over');
+  if(!fpDrag) return;
+  setNmzSlot(side, fpDrag);
+  fpDrag=null;
+}
+
+// ── MODAL ──────────────────────────────────────────────
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.overlay').forEach(el=>{
+  el.addEventListener('click',e=>{ if(e.target===el) el.classList.remove('open'); });
+});
+
+// ── INIT ───────────────────────────────────────────────
+renderF();       // localStorage 캐시로 즉시 렌더
+initFirebase();  // Firebase 연결 (비동기 — 연결되면 Firebase 데이터로 갱신)
+</script>
+</body>
+</html>
