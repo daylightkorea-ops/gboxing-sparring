@@ -443,7 +443,7 @@ function defaults(){
     mk('정준형','주엽점',75,43,'남','중상'),
     mk('김태현','주엽점',74,27,'남','상'),
     mk('소윤호','주엽점',80,40,'남','하'),
-    mk('이름모름','주엽점',75,15,'남','중'),
+    mk('김동현','주엽점',75,15,'남','중'),
     mk('김영호','주엽점',75,30,'남','중하'),
     mk('고인권','주엽점',95,30,'남','상'),
     mk('김태준','주엽점',55,16,'남','중'),
@@ -551,12 +551,33 @@ async function initFirebase(){
             matches:   data.matches   || [],
             unmatched: data.unmatched || []
           };
-          _fbHash = raw;
-          try { localStorage.setItem('sp_v3', raw); } catch(e){}
+          // ── defaults()에 있지만 Firebase에 없는 선수 자동 추가 ──
+          let merged = false;
+          defaults().forEach(def => {
+            const exists = db.fighters.some(f => f.name === def.name && f.gym === def.gym);
+            if(!exists){
+              db.fighters.push(def);
+              merged = true;
+            }
+          });
+          // defaults에 없는 지점도 gyms에 추가
+          defaults().forEach(def => {
+            if(!db.gyms.includes(def.gym)) { db.gyms.push(def.gym); merged = true; }
+          });
+          if(merged){
+            // 새 선수가 추가됐으면 Firebase에 바로 저장
+            const j = JSON.stringify(db);
+            _fbHash = j;
+            await fetch(FB_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(j) });
+            try { localStorage.setItem('sp_v3', j); } catch(e){}
+          } else {
+            _fbHash = raw;
+            try { localStorage.setItem('sp_v3', raw); } catch(e){}
+          }
         }
       } catch(e){ console.error('Firebase 파싱 오류', e); }
     } else {
-      // Firebase 비어있음 → 현재 로컬 데이터를 Firebase에 업로드
+      // Firebase 비어있음 → defaults 포함한 현재 데이터를 Firebase에 업로드
       const j = JSON.stringify(db);
       _fbHash = j;
       await fetch(FB_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(j) });
