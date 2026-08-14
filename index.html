@@ -243,7 +243,10 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
   <div class="h-text">
     <h1>G복싱 전지점 스파링</h1>
   </div>
-  <span class="sync-badge" id="sync-badge">⏳ 연결 중</span>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+    <span class="sync-badge" id="sync-badge">⏳ 연결 중</span>
+    <button id="upload-btn" onclick="forceUpload()" style="display:none;font-size:.65rem;padding:3px 9px;border-radius:12px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.15);color:#fff;cursor:pointer">☁️ Firebase에 올리기</button>
+  </div>
 </header>
 <div class="tab-bar">
   <div class="tab active" onclick="showTab('fighters',this)">👥 선수관리</div>
@@ -415,16 +418,42 @@ const mk  = (name,gym,w,age,gender,skill,status='active') => ({id:uid(),name,gym
 
 function defaults(){
   return [
-    mk('지재호','구래점',64,17,'남','중'),   mk('지재민','구래점',67,14,'남','중'),
-    mk('이윤혁','구래점',63,19,'남','중상'), mk('박우진','구래점',65,30,'남','중'),
-    mk('신지민','화정점',58,18,'남','하','hold'), mk('이진우','화정점',75,38,'남','중상'),
-    mk('노윤구','화정점',75,60,'남','중'),   mk('김동균','화정점',125,27,'남','중상','hold'),
+    // 구래점
+    mk('지재호','구래점',65,17,'남','중상'),
+    mk('지재민','구래점',67,14,'남','중'),
+    mk('이윤혁','구래점',63,19,'남','중상'),
+    mk('박우진','구래점',65,30,'남','중'),
+    mk('남궁율','구래점',58,15,'남','중상'),
+    mk('최정우','구래점',60,23,'남','중하'),
+    // 화정점
+    mk('신지민','화정점',58,18,'남','하','hold'),
+    mk('이진우','화정점',78,48,'남','중상'),
+    mk('노윤구','화정점',75,54,'남','중'),
+    mk('김동균','화정점',125,27,'남','중상','hold'),
     mk('에녹','화정점',60,20,'남','상'),
-    mk('정영훈','주엽점',58,17,'남','상'),   mk('서세준','주엽점',63,16,'남','상'),
-    mk('정준형','주엽점',75,43,'남','중상'), mk('김태현','주엽점',74,27,'남','상'),
-    mk('소윤호','주엽점',80,40,'남','하'),   mk('이름모름','주엽점',75,15,'남','중'),
-    mk('유재준','야당점',50,15,'남','하'),   mk('한시후','야당점',73,17,'남','중'),
-    mk('양설','야당점',72,19,'남','상'),     mk('양결','야당점',79,19,'남','상'),
+    mk('박하람','화정점',51,13,'남','상'),
+    mk('이준혁','화정점',68,32,'남','중상'),
+    mk('송영우','화정점',73,33,'남','중상'),
+    mk('김주민','화정점',77,18,'남','중'),
+    mk('이우진','화정점',73,36,'남','상'),
+    // 주엽점
+    mk('권재현','주엽점',45,14,'남','중'),
+    mk('정영훈','주엽점',55,17,'남','상'),
+    mk('서세준','주엽점',63,16,'남','상'),
+    mk('정준형','주엽점',75,43,'남','중상'),
+    mk('김태현','주엽점',74,27,'남','상'),
+    mk('소윤호','주엽점',80,40,'남','하'),
+    mk('이름모름','주엽점',75,15,'남','중'),
+    mk('김영호','주엽점',75,30,'남','중하'),
+    mk('고인권','주엽점',95,30,'남','상'),
+    mk('김태준','주엽점',55,16,'남','중'),
+    mk('정희윤','주엽점',60,28,'여','중'),
+    // 야당점
+    mk('양설','야당점',70,19,'남','상'),
+    mk('양결','야당점',70,19,'남','상'),
+    mk('한시후','야당점',70,17,'남','중상'),
+    mk('유재준','야당점',50,15,'남','중'),
+    mk('황지운','야당점',52,15,'남','중'),
   ];
 }
 
@@ -441,13 +470,15 @@ let _fbReady  = false;  // Firebase 초기 로드 완료 전까지 쓰기 금지
 let _fbHash   = null;   // 마지막으로 저장한 JSON (자신의 변경 감지용)
 
 // Firebase REST API (SDK 불필요 — fetch만 사용)
-const FB_URL = `https://${FIREBASE_CONFIG.projectId}-default-rtdb.firebaseio.com/gboxing.json`;
+const FB_URL = FIREBASE_CONFIG.databaseURL
+  ? `${FIREBASE_CONFIG.databaseURL}/gboxing.json`
+  : null;
 
 // ── SAVE ───────────────────────────────────────────────
 const save = () => {
   const json = JSON.stringify(db);
   try { localStorage.setItem('sp_v3', json); } catch(e){}
-  if (_fbReady) {
+  if (_fbReady && FB_URL) {
     _fbHash = json;
     fetch(FB_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(json) })
       .catch(e => console.warn('Firebase 저장 실패:', e));
@@ -459,16 +490,36 @@ const gf = id => db.fighters.find(f=>f.id===id) || {name:'?',gym:'?',weight:0,ag
 // ── FIREBASE ───────────────────────────────────────────
 function setSyncBadge(mode){
   const el = document.getElementById('sync-badge');
+  const btn = document.getElementById('upload-btn');
   if(mode === 'live'){
     el.textContent = '🔴 실시간 연동';
     el.className = 'sync-badge live';
+    if(btn) btn.style.display = 'none';
   } else if(mode === 'local'){
     el.textContent = '💾 로컬 저장';
     el.className = 'sync-badge local';
     document.getElementById('fb-banner').style.display = '';
+    if(btn) btn.style.display = '';
   } else {
     el.textContent = '⏳ 연결 중';
     el.className = 'sync-badge';
+  }
+}
+
+async function forceUpload(){
+  if(!FB_URL){ alert('Firebase URL이 설정되지 않았어요'); return; }
+  const btn = document.getElementById('upload-btn');
+  btn.textContent = '⏳ 업로드 중...'; btn.disabled = true;
+  try {
+    const json = JSON.stringify(db);
+    const res = await fetch(FB_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(json) });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    _fbHash = json; _fbReady = true;
+    setSyncBadge('live');
+    alert('✅ Firebase에 업로드 완료! 이제 다른 기기에서도 데이터가 보여요.');
+  } catch(e){
+    btn.textContent = '☁️ Firebase에 올리기'; btn.disabled = false;
+    alert('❌ 업로드 실패: ' + e.message + '\n\nFirebase 콘솔에서 보안 규칙을 확인해주세요.');
   }
 }
 
@@ -482,7 +533,7 @@ function renderCurrentSection(){
 }
 
 async function initFirebase(){
-  if(!FIREBASE_CONFIG.projectId){ setSyncBadge('local'); return; }
+  if(!FB_URL){ setSyncBadge('local'); return; }
   try {
     // 1) 최초 1회 Firebase REST API로 데이터 가져오기
     const res = await fetch(FB_URL);
