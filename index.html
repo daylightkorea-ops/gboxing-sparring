@@ -124,7 +124,7 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
 .drag-hint{font-size:.72rem;color:var(--text3);margin-bottom:12px;padding:8px 12px;background:var(--surface);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;gap:6px}
 /* RESULTS */
 .res-card{background:var(--surface);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--border)}
-.res-gym{font-size:.7rem;font-weight:700;color:var(--navy3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.res-gym{font-size:.7rem;font-weight:700;color:var(--navy3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .res-vs{display:flex;align-items:stretch;gap:8px;margin-bottom:12px}
 .rslot{flex:1;background:var(--sf2);border:1.5px solid var(--border);border-radius:10px;padding:10px;text-align:center;transition:all .2s}
 .rslot.winner{border-color:var(--green);background:var(--gbg)}
@@ -137,6 +137,18 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
 .rbn.sel-d{background:var(--amber);border-color:var(--amber);color:#fff}
 .note-inp{width:100%;background:var(--sf2);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:.8rem;resize:vertical;min-height:50px;margin-top:10px;font-family:inherit;transition:border-color .15s}
 .note-inp:focus{outline:none;border-color:var(--navy)}
+/* SPAR DATE BAR */
+.spar-date-bar{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:14px;flex-wrap:wrap}
+.spar-date-bar label{font-size:.8rem;font-weight:700;color:var(--navy);white-space:nowrap}
+.spar-date-bar input[type=date]{border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:.85rem;color:var(--text);background:var(--sf2);font-family:inherit;cursor:pointer}
+.spar-date-bar input[type=date]:focus{outline:none;border-color:var(--navy)}
+.spar-date-hint{font-size:.72rem;color:var(--text3)}
+/* RECORD BTN */
+.rec-btn{width:100%;margin-top:10px;padding:10px;border-radius:8px;border:none;background:var(--navy);color:#fff;font-size:.84rem;font-weight:700;cursor:pointer;transition:background .15s}
+.rec-btn:hover{background:var(--navy2)}
+.rec-btn:disabled{background:var(--text3);cursor:not-allowed;opacity:.6}
+.rec-btn.done{background:var(--green)}
+.rec-stamp{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;color:var(--green);font-weight:700;background:var(--gbg);border:1px solid #86efac;border-radius:20px;padding:2px 8px;margin-left:auto}
 /* MODAL */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center;padding:16px}
 .overlay.open{display:flex}
@@ -186,21 +198,27 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
 .hist-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px;background:var(--sf2);border:1px solid var(--border);margin-bottom:6px;gap:8px}
 .hist-opp{font-weight:600;font-size:.85rem}
 .hist-opp-gym{font-size:.7rem;color:var(--text3);margin-top:1px}
+.hist-date{font-size:.68rem;color:var(--text3);margin-top:2px}
 .hist-res{padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:800}
 .hist-w{background:var(--gbg);color:var(--green);border:1px solid #86efac}
 .hist-l{background:var(--rbg);color:var(--red);border:1px solid #fca5a5}
 .hist-d{background:var(--abg);color:var(--amber);border:1px solid #fcd34d}
 .hist-empty{text-align:center;padding:20px;color:var(--text3);font-size:.82rem}
-/* FIREBASE SETUP BANNER */
+/* BANNERS */
 .fb-banner{background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:.82rem;line-height:1.7;color:#856404}
 .fb-banner b{color:#664d03}
 .fb-banner code{background:#ffeeba;border-radius:4px;padding:1px 5px;font-family:monospace;font-size:.8rem}
+/* Firebase 401 전용 배너 */
+.fb-401-banner{background:#fff0f0;border:1.5px solid #fca5a5;border-radius:12px;padding:16px 18px;margin-bottom:16px;font-size:.83rem;line-height:1.85;color:#991b1b;display:none}
+.fb-401-banner b{color:#7f1d1d}
+.fb-401-banner .fix-steps{background:rgba(255,255,255,.7);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:.8rem;color:#374151;line-height:2}
+.fb-401-banner .fix-steps code{background:#fee2e2;border-radius:4px;padding:2px 6px;font-family:monospace;font-size:.78rem;color:#7f1d1d}
 /* JIDO */
 .sbtn.sb-jido{background:#fdf4ff;border-color:#a855f7;color:#7c3aed}
 .spill-jido{background:#fdf4ff;color:#7c3aed;border:1px solid #d8b4fe;padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:700;margin-left:4px}
 .match-card.has-jido{border-left-color:#a855f7}
 .jido-banner{background:#fdf4ff;border:1px solid #d8b4fe;border-radius:6px;padding:4px 10px;font-size:.72rem;color:#7c3aed;font-weight:600;margin-top:8px;display:inline-flex;align-items:center;gap:4px}
-.rank-excl{font-size:.67rem;color:#a855f7;background:#fdf4ff;border:1px solid #d8b4fe;border-radius:20px;padding:1px 6px;margin-left:4px;font-weight:600}
+.rank-excl{font-size:.67rem;color:#a855f7;background:#fdf4ff;border:1px solid #d8b4fe;border-radius:20px;padding:1px 6px;font-weight:600}
 /* ADD MATCH PANEL */
 .fighter-panel{background:var(--surface);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:var(--sh);border:1px solid var(--border)}
 .fp-title{font-size:.72rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
@@ -225,6 +243,27 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
 .nmz-add-btn:hover{background:var(--navy2)}
 .nmz-add-btn:disabled{background:var(--text3);cursor:not-allowed}
 .nmz-clear{position:absolute;top:10px;right:10px;font-size:.68rem;color:var(--text3);cursor:pointer;background:none;border:none;padding:2px 6px}
+/* ARCHIVE HISTORY */
+.arch-btn{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px}
+.arch-btn:hover{opacity:.88;transform:translateY(-1px);box-shadow:var(--sh2)}
+.arch-banner{background:var(--gbg);border:1.5px solid #6ee7b7;border-radius:10px;padding:12px 16px;font-size:.8rem;color:var(--green);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.hist-session{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;box-shadow:var(--sh);overflow:hidden}
+.hist-session-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--sf2);cursor:pointer;border-bottom:1px solid var(--border)}
+.hist-session-head:hover{background:#f1f5f9}
+.hist-session-label{font-weight:700;font-size:.9rem;color:var(--navy)}
+.hist-session-meta{font-size:.72rem;color:var(--text3);margin-top:2px}
+.hist-session-badge{display:flex;gap:6px;align-items:center}
+.hs-badge{padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:700}
+.hs-badge-n{background:var(--bbg);color:var(--blue)}
+.hist-session-body{padding:10px 14px;display:none}
+.hist-session-body.open{display:block}
+.hist-match-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:var(--sf2);border:1px solid var(--border);margin-bottom:5px;font-size:.82rem}
+.hist-match-a{font-weight:700;color:var(--text);flex:1;text-align:right}
+.hist-match-b{font-weight:700;color:var(--text);flex:1;text-align:left}
+.hist-match-vs{font-size:.7rem;color:var(--text3);font-weight:700;min-width:24px;text-align:center}
+.hist-match-res{padding:2px 8px;border-radius:12px;font-size:.72rem;font-weight:800;min-width:60px;text-align:center}
+.rank-hist-note{font-size:.73rem;color:var(--text3);text-align:center;margin-bottom:14px;background:var(--sf2);border:1px solid var(--border);border-radius:8px;padding:8px 12px}
+.export-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 /* PRINT */
 @media print{
   .tab-bar,.act-bar,.btn,.sbtn,.delbtn,.fa,.dh{display:none!important}
@@ -255,12 +294,25 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
   <div class="tab" onclick="showTab('ranking',this)">🏆 랭킹</div>
 </div>
 <div class="content">
-  <!-- Firebase 미설정 안내 배너 (설정 후 자동으로 사라짐) -->
+
+  <!-- Firebase 미설정 안내 배너 -->
   <div class="fb-banner" id="fb-banner" style="display:none">
     ⚠️ <b>지금은 내 브라우저에만 저장되고 있어요.</b> 다른 기기에서도 같은 데이터를 보려면 Firebase를 연결해야 해요.<br>
     아래 파일 상단의 <code>FIREBASE_CONFIG</code> 값을 채워주세요.<br>
     👉 <b>설정 방법:</b> <a href="https://console.firebase.google.com" target="_blank" style="color:#0a58ca">console.firebase.google.com</a>
     → 프로젝트 만들기 → Realtime Database 생성(테스트 모드) → 프로젝트 설정 → 웹 앱 추가 → config 복사
+  </div>
+
+  <!-- Firebase 401 보안 규칙 만료 배너 -->
+  <div class="fb-401-banner" id="fb-401-banner">
+    🔒 <b>Firebase 보안 규칙 만료</b> — 30일 테스트 기간이 지나서 데이터베이스가 잠겼어요.<br>
+    지금은 로컬(이 기기)에만 저장됩니다. 다른 기기와 동기화하려면 아래 방법으로 규칙을 다시 열어주세요.<br>
+    <div class="fix-steps">
+      1️⃣ <a href="https://console.firebase.google.com/project/gboxingsparring/database/gboxingsparring-default-rtdb/rules" target="_blank" style="color:#1d4ed8;font-weight:700">Firebase Console → 규칙 탭 바로가기</a><br>
+      2️⃣ 아래 내용으로 전체 교체:<br>
+      <code>{ "rules": { ".read": true, ".write": true } }</code><br>
+      3️⃣ <b>게시(Publish)</b> 버튼 클릭 → 앱 새로고침
+    </div>
   </div>
 
   <!-- 선수관리 -->
@@ -276,6 +328,7 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
     </div>
     <div id="fighters-list"></div>
   </div>
+
   <!-- 대진생성 -->
   <div class="section" id="section-bracket">
     <div class="act-bar">
@@ -284,7 +337,7 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
       <button class="btn btn-ol" onclick="clearBracket()">🗑 초기화</button>
       <button class="btn btn-ol" onclick="window.print()">🖨 인쇄</button>
     </div>
-    <!-- 경기 추가 패널 (드래그 또는 클릭으로 선수 선택) -->
+    <!-- 경기 추가 패널 -->
     <div id="add-panel" style="display:none">
       <div class="fighter-panel">
         <div class="fp-title">👥 선수를 아래 칸에 드래그하거나 클릭해서 새 경기를 추가하세요</div>
@@ -318,12 +371,23 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
       <div class="empty"><div class="ei">🗂️</div><p>자동 대진 생성 버튼을 눌러주세요<br>체중 · 실력 · 지점을 고려해 최적 매칭합니다</p></div>
     </div>
   </div>
+
   <!-- 결과기록 -->
   <div class="section" id="section-results">
+    <div id="arch-notice" style="display:none"></div>
+    <div class="spar-date-bar" id="spar-date-bar" style="display:none">
+      <label>📅 스파링 날짜</label>
+      <input type="date" id="spar-date">
+      <span class="spar-date-hint">기록하기 누르면 이 날짜로 저장돼요</span>
+    </div>
     <div id="results-list">
       <div class="empty"><div class="ei">📋</div><p>대진 탭에서 경기를 <b>확정</b>하면<br>여기에 결과 입력란이 표시됩니다</p></div>
     </div>
+    <div id="arch-btn-wrap" style="display:none">
+      <button class="arch-btn" onclick="openArchiveModal()">📦 이번 스파링 결과 마감 & 저장하기</button>
+    </div>
   </div>
+
   <!-- 랭킹 -->
   <div class="section" id="section-ranking">
     <div id="ranking-list"></div>
@@ -373,6 +437,28 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
     </div>
   </div>
 </div>
+<!-- 결과 마감 모달 -->
+<div class="overlay" id="modal-archive">
+  <div class="modal">
+    <div class="modal-t">📦 스파링 결과 저장</div>
+    <div id="arch-modal-info" style="background:var(--sf2);border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:.82rem;color:var(--text2);margin-bottom:14px;line-height:1.7"></div>
+    <div class="field">
+      <label>스파링 회차 이름</label>
+      <input id="arch-label" placeholder="예: 1차 스파링, 10월 정기 스파링" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>스파링 날짜</label>
+      <input type="date" id="arch-date">
+    </div>
+    <div style="font-size:.75rem;color:var(--green);background:var(--gbg);border:1px solid #86efac;border-radius:8px;padding:8px 12px;margin-bottom:4px">
+      ✅ 저장된 결과는 <b>랭킹에 영구 반영</b>되고, 새 대진을 짜도 사라지지 않아요.
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-navy" style="flex:1" onclick="archiveResults()">저장하기</button>
+      <button class="btn btn-ol" onclick="closeModal('modal-archive')">취소</button>
+    </div>
+  </div>
+</div>
 <!-- 지점 모달 -->
 <div class="overlay" id="modal-g">
   <div class="modal">
@@ -387,17 +473,7 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:18px 
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  🔧 FIREBASE 설정 — 아래 값을 교체하면 공유 DB가 연결됩니다
-//
-//  설정 방법 (5분):
-//  1. https://console.firebase.google.com 접속
-//  2. "프로젝트 만들기" 클릭 (Google Analytics 생략 가능)
-//  3. 왼쪽 메뉴 "빌드" → "Realtime Database" → "데이터베이스 만들기"
-//     → 위치: us-central1 → "테스트 모드로 시작" 선택
-//  4. 왼쪽 상단 톱니바퀴(⚙️) → "프로젝트 설정" → "내 앱" 섹션
-//     → "</>" 아이콘 클릭 → 앱 이름 입력 → "앱 등록"
-//  5. 아래 표시되는 firebaseConfig 값을 복사해 아래에 붙여넣기
-//  6. 이 HTML 파일을 저장하고 Vercel에 재배포
+//  🔧 FIREBASE 설정
 // ══════════════════════════════════════════════════════════════
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyDmhCqiTwkiwYahWk1-iIKhTGLg3CU2i9g",
@@ -408,7 +484,6 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "496062349246",
   appId:             "1:496062349246:web:65eee712cddbe0d23e83ef"
 };
-// ══════════════════════════════════════════════════════════════
 
 // ── UTILS ──────────────────────────────────────────────
 const SKL = {'하':1,'중하':2,'중':3,'중상':4,'상':5};
@@ -458,18 +533,24 @@ function defaults(){
 }
 
 // ── STATE ──────────────────────────────────────────────
-// localStorage에서 즉시 로드 (화면 깜빡임 없이 바로 표시)
 let db = (() => {
-  try { const r = localStorage.getItem('sp_v3'); if(r) return JSON.parse(r); } catch(e){}
-  return { gyms:['구래점','화정점','주엽점','야당점'], fighters:defaults(), matches:[], unmatched:[] };
+  try {
+    const r = localStorage.getItem('sp_v3');
+    if(r){
+      const parsed = JSON.parse(r);
+      // history 필드 없으면 추가
+      if(!parsed.history) parsed.history = [];
+      return parsed;
+    }
+  } catch(e){}
+  return { gyms:['구래점','화정점','주엽점','야당점'], fighters:defaults(), matches:[], unmatched:[], history:[] };
 })();
 
-let editId    = null;
-let drag      = null;
-let _fbReady  = false;  // Firebase 초기 로드 완료 전까지 쓰기 금지
-let _fbHash   = null;   // 마지막으로 저장한 JSON (자신의 변경 감지용)
+let editId   = null;
+let drag     = null;
+let _fbReady = false;
+let _fbHash  = null;
 
-// Firebase REST API (SDK 불필요 — fetch만 사용)
 const FB_URL = FIREBASE_CONFIG.databaseURL
   ? `${FIREBASE_CONFIG.databaseURL}/gboxing.json`
   : null;
@@ -495,10 +576,11 @@ function setSyncBadge(mode){
     el.textContent = '🔴 실시간 연동';
     el.className = 'sync-badge live';
     if(btn) btn.style.display = 'none';
+    document.getElementById('fb-401-banner').style.display = 'none';
+    document.getElementById('fb-banner').style.display = 'none';
   } else if(mode === 'local'){
     el.textContent = '💾 로컬 저장';
     el.className = 'sync-badge local';
-    document.getElementById('fb-banner').style.display = '';
     if(btn) btn.style.display = '';
   } else {
     el.textContent = '⏳ 연결 중';
@@ -519,7 +601,7 @@ async function forceUpload(){
     alert('✅ Firebase에 업로드 완료! 이제 다른 기기에서도 데이터가 보여요.');
   } catch(e){
     btn.textContent = '☁️ Firebase에 올리기'; btn.disabled = false;
-    alert('❌ 업로드 실패: ' + e.message + '\n\nFirebase 콘솔에서 보안 규칙을 확인해주세요.');
+    alert('❌ 업로드 실패: ' + e.message);
   }
 }
 
@@ -533,15 +615,22 @@ function renderCurrentSection(){
 }
 
 async function initFirebase(){
-  if(!FB_URL){ setSyncBadge('local'); return; }
+  if(!FB_URL){ setSyncBadge('local'); document.getElementById('fb-banner').style.display=''; return; }
   try {
-    // 1) 최초 1회 Firebase REST API로 데이터 가져오기
     const res = await fetch(FB_URL);
+
+    // ── 401 특수 처리: Firebase 보안 규칙 만료 ──
+    if(res.status === 401){
+      console.warn('Firebase 401: 보안 규칙 만료. Firebase Console에서 규칙을 업데이트하세요.');
+      document.getElementById('fb-401-banner').style.display = '';
+      setSyncBadge('local');
+      return;
+    }
+
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const raw = await res.json();
 
     if(raw && typeof raw === 'string'){
-      // Firebase에 데이터 있음
       try {
         const data = JSON.parse(raw);
         if(data && Array.isArray(data.fighters)){
@@ -549,23 +638,19 @@ async function initFirebase(){
             gyms:      data.gyms      || [],
             fighters:  data.fighters  || [],
             matches:   data.matches   || [],
-            unmatched: data.unmatched || []
+            unmatched: data.unmatched || [],
+            history:   data.history   || []
           };
-          // ── defaults()에 있지만 Firebase에 없는 선수 자동 추가 ──
+          // defaults()에 있지만 Firebase에 없는 선수 자동 추가
           let merged = false;
           defaults().forEach(def => {
             const exists = db.fighters.some(f => f.name === def.name && f.gym === def.gym);
-            if(!exists){
-              db.fighters.push(def);
-              merged = true;
-            }
+            if(!exists){ db.fighters.push(def); merged = true; }
           });
-          // defaults에 없는 지점도 gyms에 추가
           defaults().forEach(def => {
-            if(!db.gyms.includes(def.gym)) { db.gyms.push(def.gym); merged = true; }
+            if(!db.gyms.includes(def.gym)){ db.gyms.push(def.gym); merged = true; }
           });
           if(merged){
-            // 새 선수가 추가됐으면 Firebase에 바로 저장
             const j = JSON.stringify(db);
             _fbHash = j;
             await fetch(FB_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(j) });
@@ -576,8 +661,8 @@ async function initFirebase(){
           }
         }
       } catch(e){ console.error('Firebase 파싱 오류', e); }
-    } else {
-      // Firebase 비어있음 → defaults 포함한 현재 데이터를 Firebase에 업로드
+    } else if(!raw) {
+      // Firebase 비어있음 → 현재 데이터 업로드
       const j = JSON.stringify(db);
       _fbHash = j;
       await fetch(FB_URL, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(j) });
@@ -587,10 +672,11 @@ async function initFirebase(){
     setSyncBadge('live');
     renderF();
 
-    // 2) 8초마다 폴링 — 다른 기기 변경사항 감지
+    // 8초마다 폴링 — 다른 기기 변경사항 감지
     setInterval(async () => {
       try {
         const r = await fetch(FB_URL);
+        if(r.status === 401){ setSyncBadge('local'); document.getElementById('fb-401-banner').style.display=''; _fbReady=false; return; }
         const raw2 = await r.json();
         if(!raw2 || raw2 === _fbHash) return;
         const data = JSON.parse(raw2);
@@ -599,7 +685,8 @@ async function initFirebase(){
             gyms:      data.gyms      || [],
             fighters:  data.fighters  || [],
             matches:   data.matches   || [],
-            unmatched: data.unmatched || []
+            unmatched: data.unmatched || [],
+            history:   data.history   || []
           };
           _fbHash = raw2;
           try { localStorage.setItem('sp_v3', raw2); } catch(e){}
@@ -622,7 +709,7 @@ function showTab(id, el){
   document.getElementById('section-'+id).classList.add('active');
   if(id==='fighters') renderF();
   if(id==='bracket')  renderB();
-  if(id==='results')  renderR();
+  if(id==='results')  { initSparDate(); renderR(); }
   if(id==='ranking')  renderRanking();
 }
 
@@ -717,6 +804,12 @@ function matchScore(a,b){
   return Math.abs(a.weight-b.weight)*2 + Math.abs((SKL[a.skill]||3)-(SKL[b.skill]||3))*20;
 }
 function autoGen(){
+  // 저장 안 된 결과 있으면 경고
+  const unsaved = db.matches.filter(m=>m.status==='confirmed'&&m.result?.winner);
+  if(unsaved.length>0){
+    const ok = confirm(`⚠️ 결과가 기록된 경기가 ${unsaved.length}개 있어요.\n\n자동 대진을 새로 생성하면 현재 대진이 모두 사라져요.\n\n먼저 "결과기록" 탭에서 "결과 마감 & 저장"을 눌러 보관해두는 걸 추천해요.\n\n그냥 계속 진행할까요? (결과가 삭제됩니다)`);
+    if(!ok) return;
+  }
   const pool=db.fighters.filter(f=>f.status==='active');
   if(pool.length<2){alert('참가 가능한 선수가 2명 이상 필요합니다');return;}
   const pairs=[];
@@ -728,7 +821,7 @@ function autoGen(){
   const used=new Set(); const matches=[];
   for(const p of pairs){
     if(!used.has(p.a.id)&&!used.has(p.b.id)){
-      matches.push({id:uid(),fighterA:p.a.id,fighterB:p.b.id,status:'pending',result:null,note:''});
+      matches.push({id:uid(),fighterA:p.a.id,fighterB:p.b.id,status:'pending',result:null,note:'',sparring_type:'regular'});
       used.add(p.a.id); used.add(p.b.id);
     }
   }
@@ -805,10 +898,10 @@ function renderB(){
           <button class="sbtn ${st==='confirmed'?'sb-conf':''}" onclick="setSt('${m.id}','confirmed')">✅ 확정</button>
           <button class="sbtn ${st==='tentative'?'sb-tent':''}" onclick="setSt('${m.id}','tentative')">🤔 고민중</button>
           <button class="sbtn ${st==='pending'?'sb-pend':''}"   onclick="setSt('${m.id}','pending')">📋 미정</button>
-          <button class="sbtn ${m.sparring_type==='jido'?'sb-jido':''}" onclick="toggleJido('${m.id}')" title="지도 경기는 결과 기록은 되지만 랭킹에 포함되지 않아요">🏅 지도</button>
+          <button class="sbtn ${isJido?'sb-jido':''}" onclick="toggleJido('${m.id}')" title="지도 경기는 결과 기록은 되지만 랭킹에 포함되지 않아요">🏅 지도</button>
           <button class="delbtn" onclick="delM('${m.id}')">🗑 삭제</button>
         </div>
-        ${m.sparring_type==='jido'?'<div class="jido-banner">🏅 지도 경기 — 결과 기록 가능, 랭킹 제외</div>':''}
+        ${isJido?'<div class="jido-banner">🏅 지도 경기 — 결과 기록 가능, 랭킹 제외</div>':''}
       </div>
     </div>`;
   });
@@ -886,19 +979,144 @@ function onDEnd(){
   document.querySelectorAll('.fslot').forEach(s=>s.classList.remove('fs-drag','fs-over'));
 }
 
+// ── ARCHIVE ────────────────────────────────────────────
+function openArchiveModal(){
+  const toSave = db.matches.filter(m=>m.status==='confirmed'&&m.result?.winner);
+  if(!toSave.length){ alert('저장할 결과가 없어요. 먼저 경기 결과를 입력하고 [기록하기]를 눌러주세요.'); return; }
+  document.getElementById('arch-modal-info').innerHTML =
+    `결과가 기록된 <b style="color:var(--navy)">${toSave.length}경기</b>를 이번 스파링 기록으로 저장해요.<br>저장 후 이 경기들은 현재 대진에서 제거되고, <b>랭킹에 영구 반영</b>됩니다.`;
+  const now = new Date().toISOString().slice(0,10);
+  document.getElementById('arch-date').value = now;
+  const histCount = (db.history||[]).length + 1;
+  document.getElementById('arch-label').value = `${histCount}차 스파링`;
+  openModal('modal-archive');
+}
+
+function archiveResults(){
+  const label = document.getElementById('arch-label').value.trim() || `${(db.history||[]).length+1}차 스파링`;
+  const date  = document.getElementById('arch-date').value || new Date().toISOString().slice(0,10);
+  const toSave = db.matches.filter(m=>m.status==='confirmed'&&m.result?.winner);
+  if(!toSave.length){ alert('저장할 결과가 없어요'); closeModal('modal-archive'); return; }
+  if(!db.history) db.history = [];
+  db.history.push({
+    id: uid(),
+    label,
+    date,
+    matches: JSON.parse(JSON.stringify(toSave)) // deep copy
+  });
+  // 아카이브된 경기를 현재 대진에서 제거
+  const savedIds = new Set(toSave.map(m=>m.id));
+  db.matches = db.matches.filter(m=>!savedIds.has(m.id));
+  save();
+  closeModal('modal-archive');
+  renderR();
+  renderB();
+  renderRanking();
+  alert(`✅ "${label}" 결과가 저장되었어요!\n${toSave.length}경기가 랭킹에 영구 반영되었습니다.\n\n이제 새 대진을 생성할 수 있어요.`);
+}
+
+// ── CSV 내보내기 ────────────────────────────────────────
+function exportCSV(){
+  const allRows = [['스파링회차','날짜','선수A','체육관A','체중A','나이A','선수B','체육관B','체중B','나이B','결과','경기유형','메모']];
+
+  function addMatches(matches, sessionLabel, sessionDate){
+    matches.forEach(m=>{
+      const a=gf(m.fighterA), b=gf(m.fighterB), r=m.result||{};
+      let result='미기록';
+      if(r.winner===m.fighterA) result=`${a.name} 승`;
+      else if(r.winner===m.fighterB) result=`${b.name} 승`;
+      else if(r.winner==='draw') result='무승부';
+      allRows.push([
+        sessionLabel, sessionDate||r.recordedAt||'',
+        a.name, a.gym, a.weight, a.age,
+        b.name, b.gym, b.weight, b.age,
+        result,
+        m.sparring_type==='jido'?'지도':'일반',
+        (r.note||'').replace(/\n/g,' ')
+      ]);
+    });
+  }
+
+  // 아카이브된 기록
+  (db.history||[]).forEach(s=>{
+    addMatches(s.matches, s.label, s.date);
+  });
+  // 현재 결과 기록된 경기
+  const currentDone = db.matches.filter(m=>m.result?.winner);
+  if(currentDone.length) addMatches(currentDone, '현재 진행중', '');
+
+  if(allRows.length<=1){ alert('내보낼 기록이 없어요'); return; }
+
+  const csv = allRows.map(row=>row.map(v=>`"${String(v==null?'':v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `G복싱_스파링기록_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 // ── RESULTS ────────────────────────────────────────────
+function getSparDate(){
+  const d = document.getElementById('spar-date');
+  return d ? d.value : '';
+}
+function initSparDate(){
+  const d = document.getElementById('spar-date');
+  if(d && !d.value){
+    d.value = new Date().toISOString().slice(0,10);
+  }
+}
+function recordResult(mid){
+  const m = db.matches.find(x=>x.id===mid);
+  if(!m || !m.result?.winner){ alert('먼저 승자를 선택해주세요'); return; }
+  const date = getSparDate() || new Date().toISOString().slice(0,10);
+  m.result = {...m.result, recordedAt: date};
+  save(); renderR(); renderRanking();
+}
+
 function renderR(){
-  const conf=db.matches.filter(m=>m.status==='confirmed');
-  const el=document.getElementById('results-list');
+  const conf = db.matches.filter(m=>m.status==='confirmed');
+  const el = document.getElementById('results-list');
+  const bar = document.getElementById('spar-date-bar');
+
   if(!conf.length){
+    if(bar) bar.style.display='none';
     el.innerHTML='<div class="empty"><div class="ei">📋</div><p>대진 탭에서 경기를 <b>확정</b>하면<br>여기에 결과 입력란이 표시됩니다</p></div>';
     return;
   }
+
+  if(bar) bar.style.display='';
+  initSparDate();
+
+  // 결과 마감 버튼 표시
+  const archBtnWrap = document.getElementById('arch-btn-wrap');
+  const withResult = conf.filter(m=>m.result?.winner);
+  if(archBtnWrap) archBtnWrap.style.display = withResult.length ? '' : 'none';
+
+  // 아카이브된 회차 알림
+  const noticeEl = document.getElementById('arch-notice');
+  if(noticeEl && (db.history||[]).length>0){
+    const total = db.history.reduce((s,h)=>s+h.matches.length,0);
+    noticeEl.innerHTML = `<div class="arch-banner">📚 저장된 스파링 ${db.history.length}회차 · 총 ${total}경기가 랭킹에 반영 중이에요</div>`;
+    noticeEl.style.display='';
+  } else if(noticeEl){
+    noticeEl.style.display='none';
+  }
+
   let h='';
   conf.forEach(m=>{
     const a=gf(m.fighterA), b=gf(m.fighterB), r=m.result||{};
+    const recorded = r.recordedAt;
+    const hasWinner = !!r.winner;
+    const isJido = m.sparring_type==='jido';
     h+=`<div class="res-card">
-      <div class="res-gym">${esc(a.gym)} vs ${esc(b.gym)}${m.sparring_type==='jido'?'<span class="rank-excl">🏅 지도 · 랭킹 제외</span>':''}</div>
+      <div class="res-gym">
+        ${esc(a.gym)} vs ${esc(b.gym)}
+        ${isJido?'<span class="rank-excl">🏅 지도 · 랭킹 제외</span>':''}
+        ${recorded?`<span class="rec-stamp">✅ ${recorded}</span>`:''}
+      </div>
       <div class="res-vs">
         <div class="rslot ${r.winner===m.fighterA?'winner':''}">
           <div class="fn">${esc(a.name)}</div><div class="fm">${a.weight}kg · ${a.age}세</div>
@@ -914,34 +1132,55 @@ function renderR(){
         <button class="rbn ${r.winner===m.fighterB?'sel-b':''}" onclick="setRes('${m.id}','${m.fighterB}')">${esc(b.name)} 승</button>
       </div>
       <textarea class="note-inp" placeholder="코치 메모, 특이사항..." oninput="setNote('${m.id}',this.value)">${esc(r.note||'')}</textarea>
+      <button class="rec-btn ${recorded?'done':''}" onclick="recordResult('${m.id}')" ${!hasWinner?'disabled':''}>
+        ${recorded ? '✅ 기록완료 — 날짜 다시 기록하기' : '📅 기록하기'}
+      </button>
     </div>`;
   });
   el.innerHTML=h;
 }
-function setRes(mid,winner){ const m=db.matches.find(x=>x.id===mid); if(m){m.result={...(m.result||{}),winner};save();renderR();} }
-function setNote(mid,note){ const m=db.matches.find(x=>x.id===mid); if(m){m.result={...(m.result||{}),note};save();} }
+
+function setRes(mid,winner){
+  const m=db.matches.find(x=>x.id===mid);
+  if(m){ m.result={...(m.result||{}),winner}; save(); renderR(); }
+}
+function setNote(mid,note){
+  const m=db.matches.find(x=>x.id===mid);
+  if(m){ m.result={...(m.result||{}),note}; save(); }
+}
 
 // ── RANKING ────────────────────────────────────────────
 function calcStats(){
   const stats = {};
   const ensure = id => { if(!stats[id]) stats[id]={w:0,d:0,l:0,matches:[]}; };
-  db.matches.forEach(m=>{
+
+  function processMatch(m, sessionLabel){
     const r = m.result;
     if(!r || !r.winner) return;
-    if(m.sparring_type === 'jido') return; // 지도 경기는 랭킹 제외
+    if(m.sparring_type === 'jido') return;
     const a = m.fighterA, b = m.fighterB;
     ensure(a); ensure(b);
+    const date = r.recordedAt || null;
+    const sess = sessionLabel || null;
     if(r.winner === 'draw'){
-      stats[a].d++; stats[a].matches.push({matchId:m.id,oppId:b,result:'draw'});
-      stats[b].d++; stats[b].matches.push({matchId:m.id,oppId:a,result:'draw'});
+      stats[a].d++; stats[a].matches.push({matchId:m.id,oppId:b,result:'draw',date,session:sess});
+      stats[b].d++; stats[b].matches.push({matchId:m.id,oppId:a,result:'draw',date,session:sess});
     } else if(r.winner === a){
-      stats[a].w++; stats[a].matches.push({matchId:m.id,oppId:b,result:'win'});
-      stats[b].l++; stats[b].matches.push({matchId:m.id,oppId:a,result:'lose'});
+      stats[a].w++; stats[a].matches.push({matchId:m.id,oppId:b,result:'win',date,session:sess});
+      stats[b].l++; stats[b].matches.push({matchId:m.id,oppId:a,result:'lose',date,session:sess});
     } else if(r.winner === b){
-      stats[b].w++; stats[b].matches.push({matchId:m.id,oppId:a,result:'win'});
-      stats[a].l++; stats[a].matches.push({matchId:m.id,oppId:b,result:'lose'});
+      stats[b].w++; stats[b].matches.push({matchId:m.id,oppId:a,result:'win',date,session:sess});
+      stats[a].l++; stats[a].matches.push({matchId:m.id,oppId:b,result:'lose',date,session:sess});
     }
+  }
+
+  // 아카이브된 기록 (누적)
+  (db.history||[]).forEach(s=>{
+    s.matches.forEach(m=>processMatch(m, s.label));
   });
+  // 현재 진행중인 경기
+  db.matches.forEach(m=>processMatch(m, null));
+
   return stats;
 }
 function renderRanking(){
@@ -958,9 +1197,17 @@ function renderRanking(){
     if(sb.d!==sa.d) return sb.d-sa.d;
     return sa.l-sb.l;
   });
+  // 내보내기 + 히스토리 요약 바
+  const histCount = (db.history||[]).length;
+  const histTotal = (db.history||[]).reduce((s,h)=>s+h.matches.length,0);
+  let topBar = `<div class="export-bar">
+    <button class="btn btn-ol" onclick="exportCSV()" style="font-size:.8rem">📥 엑셀로 내보내기</button>
+    ${histCount>0?`<span style="font-size:.78rem;color:var(--text3);align-self:center">📚 ${histCount}회차 누적 · 총 ${histTotal+ids.length}경기 반영 중</span>`:''}
+  </div>`;
+
   const posClass = i => i===0?'gold':i===1?'silver':i===2?'bronze':'';
   const posMark  = i => i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
-  let h=`<div class="rank-table">
+  let h=topBar+`<div class="rank-table">
     <div class="rank-head">
       <div>#</div><div>선수</div><div>지점</div>
       <div style="text-align:center">승</div><div style="text-align:center">무</div>
@@ -978,8 +1225,49 @@ function renderRanking(){
       <div class="rank-t">${tot}</div>
     </div>`;
   });
-  h+=`</div><div style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:-4px">선수를 클릭하면 상세 기록을 볼 수 있어요</div>`;
+  h+=`</div><div style="font-size:.72rem;color:var(--text3);text-align:center;margin-top:-4px;margin-bottom:20px">선수를 클릭하면 상세 기록을 볼 수 있어요</div>`;
+
+  // 스파링 회차 기록 목록
+  if((db.history||[]).length > 0){
+    h+=`<div style="font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:10px">📚 스파링 회차 기록</div>`;
+    const sorted = [...db.history].sort((a,b)=>b.date.localeCompare(a.date));
+    sorted.forEach(s=>{
+      const wCount = s.matches.filter(m=>m.result?.winner&&m.result.winner!=='draw').length;
+      h+=`<div class="hist-session">
+        <div class="hist-session-head" onclick="toggleSession('${s.id}')">
+          <div>
+            <div class="hist-session-label">${esc(s.label)}</div>
+            <div class="hist-session-meta">📅 ${s.date} · ${s.matches.length}경기</div>
+          </div>
+          <div class="hist-session-badge">
+            <span class="hs-badge hs-badge-n">${s.matches.length}경기</span>
+            <span style="color:var(--text3);font-size:.9rem">▾</span>
+          </div>
+        </div>
+        <div class="hist-session-body" id="hsb-${s.id}">`;
+      s.matches.forEach(m=>{
+        const a=gf(m.fighterA), b=gf(m.fighterB), r=m.result||{};
+        let resText='미기록', resClass='';
+        if(r.winner===m.fighterA){resText=`${a.name} 승`;resClass='hist-w';}
+        else if(r.winner===m.fighterB){resText=`${b.name} 승`;resClass='hist-l';}
+        else if(r.winner==='draw'){resText='무승부';resClass='hist-d';}
+        h+=`<div class="hist-match-row">
+          <span class="hist-match-a">${esc(a.name)} <small style="color:var(--text3)">${esc(a.gym)}</small></span>
+          <span class="hist-match-vs">VS</span>
+          <span class="hist-match-b"><small style="color:var(--text3)">${esc(b.gym)}</small> ${esc(b.name)}</span>
+          <span class="hist-match-res ${resClass}">${resText}</span>
+        </div>`;
+      });
+      h+=`</div></div>`;
+    });
+  }
+
   el.innerHTML=h;
+}
+
+function toggleSession(sid){
+  const el = document.getElementById('hsb-'+sid);
+  if(el) el.classList.toggle('open');
 }
 function showProfile(fighterId){
   const f = gf(fighterId);
@@ -997,7 +1285,14 @@ function showProfile(fighterId){
   if(!s.matches.length){
     h='<div class="hist-empty">아직 기록된 경기가 없어요</div>';
   } else {
-    s.matches.forEach(m=>{
+    // 날짜 최신순 정렬
+    const sorted = [...s.matches].sort((a,b)=>{
+      if(!a.date && !b.date) return 0;
+      if(!a.date) return 1;
+      if(!b.date) return -1;
+      return b.date.localeCompare(a.date);
+    });
+    sorted.forEach(m=>{
       const opp = gf(m.oppId);
       const resClass = m.result==='win'?'hist-w':m.result==='lose'?'hist-l':'hist-d';
       const resTxt   = m.result==='win'?'승':m.result==='lose'?'패':'무';
@@ -1005,6 +1300,7 @@ function showProfile(fighterId){
         <div>
           <div class="hist-opp">${esc(opp.name)}</div>
           <div class="hist-opp-gym">${esc(opp.gym)} · ${opp.weight}kg · ${opp.skill}</div>
+          <div class="hist-date">${m.session?`📚 ${esc(m.session)}`:''} ${m.date?`📅 ${m.date}`:''}</div>
         </div>
         <span class="hist-res ${resClass}">${resTxt}</span>
       </div>`;
@@ -1022,8 +1318,8 @@ function toggleJido(id){
 }
 
 // ── 경기 추가 패널 ──────────────────────────────────────
-let nmzPick = {A: null, B: null};   // 새 경기 슬롯에 선택된 선수
-let fpDrag  = null;                  // 선수 패널에서 드래그 중인 선수 id
+let nmzPick = {A: null, B: null};
+let fpDrag  = null;
 
 function toggleAddPanel(){
   const p = document.getElementById('add-panel');
@@ -1046,7 +1342,6 @@ function renderFpList(){
     </div>`).join('');
 }
 
-// 선수 패널 클릭으로 선택 (드래그 불편할 때)
 let fpClickPick = null;
 function fpChipClick(fid){
   if(!fpClickPick){
@@ -1056,7 +1351,6 @@ function fpChipClick(fid){
     if(el) el.style.outline = '2px solid var(--navy)';
   } else {
     if(fpClickPick === fid){ fpClickPick=null; document.querySelectorAll('.fp-chip').forEach(c=>c.style.outline=''); return; }
-    // 두 번째 선수 선택 → A, B 슬롯 채우기
     setNmzSlot('A', fpClickPick);
     setNmzSlot('B', fid);
     fpClickPick = null;
@@ -1064,11 +1358,9 @@ function fpChipClick(fid){
   }
 }
 
-// 슬롯 클릭 시 이미 fpClickPick 된 선수 넣기
 function nmzSlotClick(side){
   if(!fpClickPick) return;
   setNmzSlot(side, fpClickPick);
-  // 반대쪽 슬롯에 포커스 알림
   fpClickPick = null;
   document.querySelectorAll('.fp-chip').forEach(c=>c.style.outline='');
 }
@@ -1076,14 +1368,13 @@ function nmzSlotClick(side){
 function setNmzSlot(side, fid){
   const f = db.fighters.find(x=>x.id===fid); if(!f)return;
   nmzPick[side] = fid;
-  const nameEl = document.getElementById(`nmz-${side.toLowerCase()}-name`);
-  const infoEl = document.getElementById(`nmz-${side.toLowerCase()}-info`);
-  const emptyEl = document.getElementById(`nmz-${side.toLowerCase()}-empty`);
-  const slotEl  = document.getElementById(`nmz-${side.toLowerCase()}`);
-  nameEl.textContent = f.name; nameEl.style.display='';
-  infoEl.textContent = `${f.gym} · ${f.weight}kg · ${f.skill}`; infoEl.style.display='';
-  emptyEl.style.display='none';
-  slotEl.classList.add('filled');
+  const s = side.toLowerCase();
+  document.getElementById(`nmz-${s}-name`).textContent = f.name;
+  document.getElementById(`nmz-${s}-name`).style.display='';
+  document.getElementById(`nmz-${s}-info`).textContent = `${f.gym} · ${f.weight}kg · ${f.skill}`;
+  document.getElementById(`nmz-${s}-info`).style.display='';
+  document.getElementById(`nmz-${s}-empty`).style.display='none';
+  document.getElementById(`nmz-${s}`).classList.add('filled');
   updateNmzBtn();
 }
 
@@ -1106,13 +1397,9 @@ function commitNewMatch(){
   if(!nmzPick.A||!nmzPick.B){ alert('선수를 두 명 모두 선택해주세요'); return; }
   if(nmzPick.A===nmzPick.B){ alert('같은 선수는 선택할 수 없어요'); return; }
   db.matches.push({id:uid(),fighterA:nmzPick.A,fighterB:nmzPick.B,status:'pending',result:null,note:'',sparring_type:'regular'});
-  save();
-  clearNmz();
-  renderB();
-  renderR();
+  save(); clearNmz(); renderB(); renderR();
 }
 
-// 선수 패널 드래그
 function onFpStart(e, fid){
   fpDrag = fid;
   e.dataTransfer.effectAllowed='copy';
@@ -1123,8 +1410,6 @@ function onFpEnd(e, fid){
   fpDrag=null;
   document.querySelectorAll('.fp-chip').forEach(c=>c.classList.remove('fc-drag'));
 }
-
-// 새 경기 영역 드래그 이벤트
 function onNmzOver(e){
   if(!fpDrag) return;
   e.preventDefault();
@@ -1138,12 +1423,9 @@ function onNmzDrop(e){
   e.preventDefault();
   document.getElementById('nmz').classList.remove('nmz-over');
   if(!fpDrag) return;
-  // 빈 슬롯 있으면 자동으로 채워줌
   if(!nmzPick.A){ setNmzSlot('A', fpDrag); fpDrag=null; return; }
   if(!nmzPick.B){ setNmzSlot('B', fpDrag); fpDrag=null; return; }
 }
-
-// 개별 슬롯 드래그 이벤트
 function onNmzSlotOver(e, side){
   if(!fpDrag) return;
   e.preventDefault(); e.stopPropagation();
@@ -1169,8 +1451,8 @@ document.querySelectorAll('.overlay').forEach(el=>{
 });
 
 // ── INIT ───────────────────────────────────────────────
-renderF();       // localStorage 캐시로 즉시 렌더
-initFirebase();  // Firebase 연결 (비동기 — 연결되면 Firebase 데이터로 갱신)
+renderF();
+initFirebase();
 </script>
 </body>
 </html>
